@@ -2,8 +2,8 @@
   "name": "second-renderer",
   "version": "0.1.0",
   "description": "Second is a component rendering service",
-  "main": "lib/index.js",
-  "module": "src/index.js",
+  "main": "lib/renderer.js",
+  "module": "src/renderer.js",
   "scripts": {
     "build": "npm run babel",
     "babel": "babel src -d lib",

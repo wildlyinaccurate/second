@@ -6,7 +6,7 @@ import proxyquire from 'proxyquire'
 import Fetcher from './fetcher'
 import Container from './container'
 
-export function render (componentModule, params) {
+export default function render (componentModule, params) {
   const fetcher = new Fetcher()
   const container = new Container(fetcher)
 
