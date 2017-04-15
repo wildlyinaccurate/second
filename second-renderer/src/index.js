@@ -4,7 +4,7 @@ import { propOr } from 'lodash/fp'
 
 import getRendererLib from './renderer-lib'
 import Container from './container'
-import Fetcher from '../fetcher'
+import Fetcher from './fetcher'
 
 const DEFAULT_RENDERER_LIB = 'preact-compat'
 

@@ -1,23 +1,26 @@
 {
-  "name": "second-api",
-  "version": "1.0.0",
-  "description": "Second web API",
+  "name": "second-renderer",
+  "version": "0.1.0",
+  "description": "Second is a component rendering service",
   "main": "lib/index.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "npm run babel && cd second-renderer && npm run build && cd - && cd second-bundler && npm run build",
+    "build": "npm run babel",
     "babel": "babel src -d lib",
     "test": "npm run eslint",
-    "eslint": "eslint --fix bin/ src/",
-    "serve": "npm run build && node ."
+    "eslint": "eslint --fix bin/ src/"
   },
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.0",
-    "express": "^4.15.2",
-    "second-bundler": "^0.1.0",
-    "second-renderer": "^0.1.0"
+    "lodash": "^4.17.4",
+    "preact": "^8.1.0",
+    "preact-compat": "^3.14.3",
+    "preact-render-to-string": "^3.6.0",
+    "proxyquire": "^1.7.11",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

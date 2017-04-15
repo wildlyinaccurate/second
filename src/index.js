@@ -1,9 +1,9 @@
 import Promise from 'bluebird'
 import express from 'express'
+import render from 'second-renderer'
+import { getStyles } from 'second-bundler'
 
 import template from './template'
-import render from './renderer'
-import { getStyles } from './bundler'
 
 const app = express()
 
