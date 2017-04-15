@@ -3,14 +3,15 @@ import express from 'express'
 
 import template from './template'
 import render from './renderer'
+import { getStyles } from './bundler'
 
 const app = express()
 
 const renderModuleIntoEnvelope = (module, params) =>
   Promise.all([
-    render(module, params),
-    Promise.resolve(['<style>body{color:red}</style>'])
-  ]).then(([bodyInline, head]) => ({ head, bodyInline, bodyLast: [] }))
+    getStyles(module),
+    render(module, params)
+  ]).then(([head, bodyInline]) => ({ head, bodyInline, bodyLast: [] }))
 
 app.get('/render/:module', (req, res) => {
   renderModuleIntoEnvelope(req.params.module, req.query)
