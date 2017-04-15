@@ -1,22 +1,24 @@
-import { createElement } from 'react'
-import createReactClass from 'create-react-class'
+import { Component, createElement } from 'react'
 
 export default function makeContainer (fetcher) {
   return {
     create (Component, params) {
-      return createReactClass({
-        displayName: `SecondContainer/${Component.displayName}`,
+      const container = class SecondContainer extends Component {
+        constructor(props) {
+          super(props)
 
-        getInitialState: function getInitialState () {
-          return {
-            data: fetcher.request(params.data(this.props))
+          this.displayName = `SecondContainer/${Component.displayName}`
+          this.state = {
+            data: fetcher.request(params.data(props))
           }
-        },
+        }
 
-        render: function render () {
+        render () {
           return createElement(Component, Object.assign({}, this.props, this.state.data))
         }
-      })
+      }
+
+      return container
     }
   }
 }

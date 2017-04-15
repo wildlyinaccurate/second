@@ -1,4 +1,4 @@
-# Second
+# Second Renderer
 
 Second is a component rendering service.
 
