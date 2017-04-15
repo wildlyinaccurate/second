@@ -1,9 +1,7 @@
-import { Component, createElement } from 'react'
-
-export default function makeContainer (fetcher) {
+export default function makeContainer (React, fetcher) {
   return {
     create (Component, params) {
-      const container = class SecondContainer extends Component {
+      const container = class SecondContainer extends React.Component {
         constructor(props) {
           super(props)
 
@@ -14,7 +12,10 @@ export default function makeContainer (fetcher) {
         }
 
         render () {
-          return createElement(Component, Object.assign({}, this.props, this.state.data))
+          return React.createElement(
+            Component,
+            Object.assign({}, this.props, this.state.data)
+          )
         }
       }
 
