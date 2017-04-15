@@ -1,5 +1,10 @@
 import Promise from 'bluebird'
-import { filter, mapValues } from 'lodash/fp'
+import { filter, join, map, mapValues, toPairs } from 'lodash/fp'
+import HttpClient from 'bbc-http-client'
+
+const REFETCH_DELAY = 100
+const client = new HttpClient({ timeout: 10000 })
+const paramsToUriString = params => map(join('/'), toPairs(params))
 
 export default class Fetcher {
   constructor () {
@@ -31,39 +36,41 @@ export default class Fetcher {
       }
 
       return {}
-
     }, requests)
   }
 
   // Make an external call to fetch data
   fetch (params) {
-    return Promise.delay(200).then(() => Promise.resolve({
-      meta: {
-        responseCode: 200
-      },
-      body: {
-        items: [
-          fake(1),
-          fake(2),
-          fake(3),
-          fake(4),
-          fake(5),
-          fake(6),
-          fake(7),
-          fake(8),
-          fake(9),
-          fake(10),
-          fake(11),
-          fake(12),
-          fake(13)
-        ]
-      }
-    }))
-  }
-}
+    const url = this.makeMorphUrl(params.uri)
 
-function fake (n) {
-  return {
-    title: `Fake ${n}`
+    return new Promise((resolve, reject) => {
+      client.get({ url, json: true }, (err, resp, body) => {
+        if (!err && resp.statusCode === 200) {
+          resolve({
+            body,
+            meta: {
+              statusCode: resp.statusCode
+            }
+          })
+        } else if (resp.statusCode === 202) {
+          resolve(
+            Promise.delay(REFETCH_DELAY).then(() => this.fetch(params))
+          )
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  makeMorphUrl (params) {
+    const template = params.data
+
+    delete params.data
+
+    const encodedParams = mapValues(encodeURIComponent, params)
+    const uriParams = paramsToUriString(encodedParams).join('/')
+
+    return `https://morph.api.bbci.co.uk/data/${template}/${uriParams}`
   }
 }

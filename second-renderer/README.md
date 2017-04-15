@@ -19,6 +19,10 @@ Renders a component to HTML, returning a Promise that resolves to a string conta
 
 - `@@renderer`: Specifies which library to render the component with. Available options are `react`, `preact`, `preact-compat`.
 
+## The fetcher
+
+All fetching is done through Morph. Therefore, a valid certificate is required for fetching to work. Currently, only fetching from Morph data templates is supported. Fetching directly from a Morph fetcher service is not supported.
+
 ## Interaction with `Container` components
 
 CBF writing docs but basically compatible with morph-container. The renderer will shim second-container in place of morph-container whenever it is resolved with `require()` (which should be most cases).

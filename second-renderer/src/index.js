@@ -7,6 +7,7 @@ import Container from './container'
 import Fetcher from './fetcher'
 
 const DEFAULT_RENDERER_LIB = 'preact-compat'
+const RERENDER_DELAY = 100
 
 const makeGlobal = obj => Object.assign({}, obj, { '@global': true })
 
@@ -34,7 +35,7 @@ function renderUntilComplete (React, ReactDOMServer, fetcher, Component, params)
 
     if (fetcher.hasOutstandingRequests()) {
       // Requests were made to the fetcher which have not yet been resolved
-      return Promise.delay(50).then(() => renderUntilComplete(React, ReactDOMServer, fetcher, Component, params))
+      return Promise.delay(RERENDER_DELAY).then(() => renderUntilComplete(React, ReactDOMServer, fetcher, Component, params))
     }
 
     resolve(rendered)
@@ -42,7 +43,7 @@ function renderUntilComplete (React, ReactDOMServer, fetcher, Component, params)
     if (fetcher.hasOutstandingRequests()) {
       // The error was potentially due to missing data in a downstream
       // component; try again
-      return Promise.delay(50).then(() => renderUntilComplete(React, ReactDOMServer, fetcher, Component, params))
+      return Promise.delay(RERENDER_DELAY).then(() => renderUntilComplete(React, ReactDOMServer, fetcher, Component, params))
     }
 
     throw e

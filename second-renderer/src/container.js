@@ -2,7 +2,7 @@ export default function makeContainer (React, fetcher) {
   return {
     create (Component, params) {
       const container = class SecondContainer extends React.Component {
-        constructor(props) {
+        constructor (props) {
           super(props)
 
           this.displayName = `SecondContainer/${Component.displayName}`
