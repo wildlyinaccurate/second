@@ -6,14 +6,16 @@ import proxyquire from 'proxyquire'
 import Fetcher from './fetcher'
 import Container from './container'
 
+const makeGlobal = obj => Object.assign({}, obj, { '@global': true })
+
 export default function render (componentModule, params) {
   const fetcher = new Fetcher()
   const container = new Container(fetcher)
 
-  const Component = proxyquire(componentModule, {
+  const Component = proxyquire.noCallThru()(componentModule, {
     'bbc-morph-grandstand': () => {},
-    'morph-container': Object.assign({}, container),
-    'react': React
+    'morph-container': makeGlobal(container),
+    'react': makeGlobal(React)
   })
 
   return renderUntilComplete(fetcher, Component, params)
