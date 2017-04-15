@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { filter, join, map, mapValues, toPairs } from 'lodash/fp'
+import { clone, filter, join, map, mapValues, toPairs } from 'lodash/fp'
 import HttpClient from 'bbc-http-client'
 
 const REFETCH_DELAY = 100
@@ -41,7 +41,7 @@ export default class Fetcher {
 
   // Make an external call to fetch data
   fetch (params) {
-    const url = this.makeMorphUrl(params.uri)
+    const url = this.makeMorphUrl(clone(params.uri))
 
     return new Promise((resolve, reject) => {
       client.get({ url, json: true }, (err, resp, body) => {
