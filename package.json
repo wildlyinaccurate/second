@@ -5,11 +5,10 @@
   "main": "lib/index.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "npm run eslint-fix; npm run babel",
-    "eslint-fix": "eslint --fix bin/ src/",
+    "build": "npm run babel",
     "babel": "babel src -d lib",
     "test": "npm run eslint",
-    "eslint": "eslint bin/ src/",
+    "eslint": "eslint --fix bin/ src/",
     "serve": "npm run build && node lib/api.js"
   },
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
