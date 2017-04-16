@@ -2,6 +2,7 @@ import Promise from 'bluebird'
 import fs from 'fs'
 import { _resolveFilename } from 'module'
 import { dirname } from 'path'
+import { map, trim } from 'lodash/fp'
 
 const { readFileAsync, statAsync } = Promise.promisifyAll(fs)
 
@@ -33,9 +34,15 @@ function recursivelyGetStyles (moduleRoot, acc = emptyStyleAccumulator()) {
       readFileAsync(enhancedCssPath, 'utf-8')
     ])
     .all()
+    .then(map(trim))
     .spread((core, enhanced) => {
-      acc.core.push(core)
-      acc.enhanced.push(enhanced)
+      if (core !== '') {
+        acc.core.push(core)
+      }
+
+      if (enhanced !== '') {
+        acc.enhanced.push(enhanced)
+      }
     })
     .then(() =>
       Object.keys(modulePkg.dependencies || {})
