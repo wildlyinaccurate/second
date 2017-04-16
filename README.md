@@ -26,3 +26,26 @@ Renders `module` with second-renderer, and bundles its assets with second-bundle
 ### `/preview/:module -> HTML`
 
 Renders `module` with second-renderer, and bundles its assets with second-bundler. Inserts the results into a standard HTML page.
+
+## Running the server
+
+Clone & install dependencies
+
+```
+git clone git@github.com:wildlyinaccurate/second.git
+cd ./second
+npm install
+```
+
+Then link or install the modules you want to render, e.g.
+
+```
+npm link /path/to/morph-modules/news-top-stories
+npm install some-great-module
+```
+
+Now build and start the server with
+
+```
+npm run serve
+```
