@@ -1,5 +1,12 @@
 # Second web API
 
+## TODO
+
+- Mock `morph-require` and support transitive / at-runtime module
+- Better support for Morph requester formats
+- Cache expensive operations between requests
+- Formalise some specs that can be converted into ✨tests✨
+
 ## JSON envelope format
 
 This API works with the envelope format, which is a JSON object containing the following properties:

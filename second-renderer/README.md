@@ -12,7 +12,7 @@ Renders a component to HTML, returning a Promise that resolves to a string conta
 
 #### Arguments
 
-- `moduleName` _(String)_: A name which, when resolved by `require()`, returns a component.
+- `moduleName` _(String)_: A name which, when resolved by `require()`, returns a Second component.
 - `props` _(Object)_: Props that are passed directly to the component. Can also contain some special props that are understood by the renderer itself (see below).
 
 #### Special props
