@@ -11,7 +11,13 @@ const renderModuleIntoEnvelope = (module, params) =>
   Promise.all([
     getStyles(module),
     render(module, params)
-  ]).then(([head, bodyInline]) => ({ head, bodyInline, bodyLast: [] }))
+  ]).spread((styles, renderedComponent) => ({
+    head: [
+      `<style>${styles.enhanced.reverse().join('')}</style>`
+    ],
+    bodyInline: renderedComponent,
+    bodyLast: []
+  }))
 
 app.get('/render/:module', (req, res) => {
   renderModuleIntoEnvelope(req.params.module, req.query)
@@ -26,7 +32,6 @@ app.get('/preview/:module', (req, res) => {
       bodyLast: envelope.bodyLast.join('\n')
     }))
 })
-
 
 app.engine('html', template)
 app.set('views', './views')

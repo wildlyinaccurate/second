@@ -45,7 +45,7 @@ export default class Fetcher {
 
     return new Promise((resolve, reject) => {
       client.get({ url, json: true }, (err, resp, body) => {
-        if (!err && resp.statusCode === 200) {
+        if (resp.statusCode === 200) {
           resolve({
             body,
             meta: {
