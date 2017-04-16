@@ -2,7 +2,7 @@
 
 ## TODO
 
-- Mock `morph-require` and support transitive / at-runtime module
+- Mock `morph-require` and support modules that are required transitively / at-runtime
 - Better support for Morph requester formats
 - Cache expensive operations between requests
 - Formalise some specs that can be converted into ✨tests✨
