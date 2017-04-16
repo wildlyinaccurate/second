@@ -12,9 +12,9 @@ const renderModuleIntoEnvelope = (module, params) =>
     getStyles(module),
     render(module, params)
   ]).spread((styles, renderedComponent) => ({
-    head: [
-      `<style>${styles.enhanced.reverse().join('')}</style>`
-    ],
+    head: styles.enhanced.map(style =>
+      `<style>${style}</style>`
+    ),
     bodyInline: renderedComponent,
     bodyLast: []
   }))
