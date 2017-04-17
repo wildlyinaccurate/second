@@ -1,30 +1,53 @@
 import Promise from 'bluebird'
 import proxyquire from 'proxyquire'
 import { propOr } from 'lodash/fp'
+import { getStyles } from 'second-bundler'
 
 import getRendererLib from './renderer-lib'
-import Container from './container'
+import makeContainer from './container'
 import Fetcher from './fetcher'
+import RuntimeDependencyManager from './runtime-dependency-manager'
 
 const DEFAULT_RENDERER_LIB = 'preact-compat'
 const RERENDER_DELAY = 100
 
 const makeGlobal = obj => Object.assign({}, obj, { '@global': true })
 
+const combineStyles = (acc, style) => Object.assign({}, acc, {
+  core: [...style.core, ...acc.core],
+  enhanced: [...style.enhanced, ...acc.enhanced]
+})
+
 export default function render (componentModule, params) {
   const renderer = propOr(DEFAULT_RENDERER_LIB, '@@renderer', params)
   const [React, ReactDOMServer] = getRendererLib(renderer)
 
   const fetcher = new Fetcher()
-  const container = new Container(React, fetcher)
+  const container = makeContainer(React, fetcher)
+
+  const dependencyManager = new RuntimeDependencyManager()
+  dependencyManager['@global'] = true
 
   const Component = proxyquire.noCallThru()(componentModule, {
     'bbc-morph-grandstand': () => {},
     'morph-container': makeGlobal(container),
+    'morph-require': dependencyManager,
     'react': makeGlobal(React)
   })
 
-  return renderUntilComplete(React, ReactDOMServer, fetcher, Component, params)
+  return Promise.all([
+      renderUntilComplete(React, ReactDOMServer, fetcher, Component, params),
+      getStyles(componentModule)
+    ]).spread((markup, styles) => [
+      markup,
+      styles,
+      Promise.all(dependencyManager.mapDependencies(getStyles))
+    ])
+    .all()
+    .spread((markup, styles, runtimeDependencyStyles) => ({
+      markup,
+      styles: runtimeDependencyStyles.reduce(combineStyles, styles)
+    }))
 }
 
 function renderUntilComplete (React, ReactDOMServer, fetcher, Component, params) {

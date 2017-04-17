@@ -15,6 +15,7 @@
   "dependencies": {
     "bbc-http-client": "git+ssh://git@github.com/bbc/bbc-http-client-node.git",
     "bluebird": "^3.5.0",
+    "caller": "^1.0.1",
     "lodash": "^4.17.4",
     "preact": "^8.1.0",
     "preact-compat": "^3.14.3",

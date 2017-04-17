@@ -1,21 +1,17 @@
 import Promise from 'bluebird'
 import express from 'express'
 import render from 'second-renderer'
-import { getStyles } from 'second-bundler'
 
 import template from './template'
 
 const app = express()
 
+const wrapStyle = style => `<style>${style}</style>`
+
 const renderModuleIntoEnvelope = (module, params) =>
-  Promise.all([
-    getStyles(module),
-    render(module, params)
-  ]).spread((styles, renderedComponent) => ({
-    head: styles.enhanced.map(style =>
-      `<style>${style}</style>`
-    ),
-    bodyInline: renderedComponent,
+  render(module, params).then(component => ({
+    head: component.styles.enhanced.map(wrapStyle),
+    bodyInline: component.markup,
     bodyLast: []
   }))
 
