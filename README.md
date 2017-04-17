@@ -2,7 +2,7 @@
 
 ## TODO
 
-- Mock `morph-require` and support modules that are required transitively / at-runtime
+- Render styles in the order that they appear in the (root-first) dependency tree
 - Better support for Morph requester formats
 - Cache expensive operations between requests
 - Formalise some specs that can be converted into ✨ tests ✨

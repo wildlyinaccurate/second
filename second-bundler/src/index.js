@@ -6,6 +6,11 @@ import { map, trim } from 'lodash/fp'
 
 const { readFileAsync, statAsync } = Promise.promisifyAll(fs)
 
+// Traversing the dependency tree results in all grandstand variants being
+// bundled. Probably a more sensible approach is to hook into require() and
+// only bundle modules that are actually used.
+const EXCLUDE_MODULES = ['bbc-morph-grandstand']
+
 const styleAccumulator = (core, enhanced) => ({
   core: [].concat(core || []),
   enhanced: [].concat(enhanced || [])
@@ -33,9 +38,9 @@ export function getStyles (module) {
   return recursivelyGetStyles(moduleRoot)
 }
 
-export function getStylesFrom (moduleRoot) {
-  const coreCssPath = `${moduleRoot}/public/core.css`
-  const enhancedCssPath = `${moduleRoot}/public/enhanced.css`
+export function getStylesFrom (directory) {
+  const coreCssPath = `${directory}/core.css`
+  const enhancedCssPath = `${directory}/enhanced.css`
 
   return statAsync(enhancedCssPath)
     .then(() => [
@@ -46,13 +51,17 @@ export function getStylesFrom (moduleRoot) {
     .all()
     .then(map(trim))
     .spread(styleAccumulator)
-    .catch(() => {} /* No second-compatible styles in this module */)
+    .catch(styleAccumulator /* No second-compatible styles in this module */)
 }
 
 function recursivelyGetStyles (moduleRoot, acc = styleAccumulator()) {
   const modulePkg = require(`${moduleRoot}/package.json`)
 
-  return getStylesFrom(moduleRoot)
+  if (EXCLUDE_MODULES.includes(modulePkg.name)) {
+    return Promise.resolve(acc)
+  }
+
+  return getStylesFrom(`${moduleRoot}/public`)
     .then(styles => _mergeAccumulators(acc, styles))
     .then(() =>
       Object.keys(modulePkg.dependencies || {})

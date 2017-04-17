@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import proxyquire from 'proxyquire'
 import { propOr } from 'lodash/fp'
-import { getStyles, mergeAccumulators } from 'second-bundler'
+import { getStyles, getStylesFrom, mergeAccumulators } from 'second-bundler'
 
 import getRendererLib from './renderer-lib'
 import makeContainer from './container'
@@ -36,7 +36,7 @@ export default function render (componentModule, params) {
     ]).spread((markup, styles) => [
       markup,
       styles,
-      Promise.all(dependencyManager.mapDependencies(getStyles))
+      getRuntimeDependencyStyles(dependencyManager)
     ])
     .all()
     .spread((markup, styles, runtimeDependencyStyles) => ({
@@ -66,4 +66,20 @@ function renderUntilComplete (React, ReactDOMServer, fetcher, Component, params)
 
     throw e
   })
+}
+
+function getRuntimeDependencyStyles (dependencyManager) {
+  const runtimeStyles = dependencyManager.mapDependencies(path => getStylesFrom(`${path}/public`))
+
+  const runtimeSubfolderStyles = dependencyManager.mapSubfolderDependencies(path => {
+    const pathParts = path.split('/')
+    const subfolder = pathParts.pop()
+
+    return getStylesFrom(`${pathParts.join('/')}/public/${subfolder}`)
+  })
+
+  return Promise.all([
+    ...runtimeStyles,
+    ...runtimeSubfolderStyles
+  ])
 }
