@@ -6,9 +6,6 @@ import { map, trim } from 'lodash/fp'
 
 const { readFileAsync, statAsync } = Promise.promisifyAll(fs)
 
-// Traversing the dependency tree results in all grandstand variants being
-// bundled. Probably a more sensible approach is to hook into require() and
-// only bundle modules that are actually used.
 const EXCLUDE_MODULES = ['bbc-morph-grandstand']
 
 const styleAccumulator = (core, enhanced) => ({
@@ -57,6 +54,9 @@ export function getStylesFrom (directory) {
 function recursivelyGetStyles (moduleRoot, acc = styleAccumulator()) {
   const modulePkg = require(`${moduleRoot}/package.json`)
 
+  // Traversing the dependency tree results in all grandstand variants being
+  // bundled. Probably a more sensible approach is to hook into require() and
+  // only bundle modules that are actually used.
   if (EXCLUDE_MODULES.includes(modulePkg.name)) {
     return Promise.resolve(acc)
   }
