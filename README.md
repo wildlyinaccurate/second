@@ -29,12 +29,18 @@ Renders `module` with second-renderer, and bundles its assets with second-bundle
 
 ## Running the server
 
-Clone & install dependencies
+Clone, install, and link everything up
 
 ```
 git clone git@github.com:wildlyinaccurate/second.git
-cd ./second
+cd ./second/second-bundler
 npm install
+cd ../second-renderer
+npm install
+npm link ../second-bundler
+cd ../
+npm install
+npm link ./second-renderer
 ```
 
 Then link or install the modules you want to render, e.g.
