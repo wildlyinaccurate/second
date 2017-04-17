@@ -41,7 +41,7 @@ export default function render (componentModule, params) {
     .all()
     .spread((markup, styles, runtimeDependencyStyles) => ({
       markup,
-      styles: runtimeDependencyStyles.reduce(mergeAccumulators, styles)
+      styles: mergeAccumulators(runtimeDependencyStyles, styles)
     }))
 }
 
@@ -79,7 +79,8 @@ function getRuntimeDependencyStyles (dependencyManager) {
   })
 
   return Promise.all([
-    ...runtimeStyles,
-    ...runtimeSubfolderStyles
-  ])
+      ...runtimeStyles,
+      ...runtimeSubfolderStyles
+    ])
+    .then(styles => styles.reduce(mergeAccumulators, {}))
 }

@@ -15,8 +15,8 @@ const styleAccumulator = (core, enhanced) => ({
 
 // Merge the second accumulator into the first by modifying the first
 const _mergeAccumulators = (acc1, acc2) => Object.assign(acc1, {
-  core: [...acc2.core, ...acc1.core],
-  enhanced: [...acc2.enhanced, ...acc1.enhanced]
+  core: [...acc1.core, ...acc2.core],
+  enhanced: [...acc1.enhanced, ...acc2.enhanced]
 })
 
 // Immutable version of _mergeAccumulators
