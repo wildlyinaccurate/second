@@ -2,8 +2,8 @@
   "name": "second-bundler",
   "version": "0.1.0",
   "description": "Bundle the assets for Second-compatible component modules",
-  "main": "lib/index.js",
-  "module": "src/index.js",
+  "main": "lib/foo.js",
+  "typings": "src/index",
   "scripts": {
     "build": "tsc",
     "test": "npm run tslint",
@@ -11,15 +11,15 @@
   },
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
   "license": "ISC",
-  "devDependencies": {
-    "tslint": "^5.1.0",
-    "tslint-config-standard": "^5.0.2",
-    "typescript": "^2.2.2"
-  },
   "dependencies": {
     "@types/bluebird": "^3.5.2",
     "@types/node": "^6.0.69",
     "bluebird": "^3.5.0",
     "npm": "^4.5.0"
+  },
+  "devDependencies": {
+    "tslint": "^5.1.0",
+    "tslint-config-standard": "^5.0.2",
+    "typescript": "^2.2.2"
   }
 }

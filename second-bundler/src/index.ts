@@ -8,7 +8,7 @@ const { readFileAsync, statAsync }: any = Promise.promisifyAll(fs)
 
 const EXCLUDE_MODULES = ['bbc-morph-grandstand']
 
-interface StyleAccumulator {
+export interface StyleAccumulator {
   core: string[]
   enhanced: string[]
 }

@@ -7,14 +7,14 @@ import template from './template'
 const app = express()
 
 const DEFAULT_RENDERER_LIB = 'preact-compat'
-const [VDom, VDomServer] = getRendererLib(DEFAULT_RENDERER_LIB)
-const renderer = new Renderer({ VDom, VDomServer })
+const [VDom, VDomRenderer] = getRendererLib(DEFAULT_RENDERER_LIB)
+const renderer = new Renderer({ VDom, VDomRenderer })
 
 const wrapStyle = style => `<style>${style}</style>`
 
 const renderModuleIntoEnvelope = (module, params) => {
   if (params['@@renderer']) {
-    [renderer.VDom, renderer.VDomServer] = getRendererLib(params['@@renderer'])
+    [renderer.VDom, renderer.VDomRenderer] = getRendererLib(params['@@renderer'])
   }
 
   return renderer.render(module, params).then(component => ({

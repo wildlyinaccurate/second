@@ -1,4 +1,4 @@
-import Promise from 'bluebird'
+import * as Promise from 'bluebird'
 import { clone, filter, join, map, mapValues, toPairs } from 'lodash/fp'
 import HttpClient from 'bbc-http-client'
 

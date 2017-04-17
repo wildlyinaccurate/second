@@ -2,7 +2,12 @@ import caller from 'caller'
 import { _resolveFilename } from 'module'
 import { dirname } from 'path'
 
+[].map
+
 export default class RuntimeDependencyManager {
+  dependencies: object
+  subFolderDependencies: object
+
   constructor () {
     this.dependencies = {}
     this.subFolderDependencies = {}
@@ -22,11 +27,11 @@ export default class RuntimeDependencyManager {
     }
   }
 
-  mapDependencies (fn) {
+  mapDependencies (fn): Array<any> {
     return Object.values(this.dependencies).map(fn)
   }
 
-  mapSubfolderDependencies (fn) {
+  mapSubfolderDependencies (fn): Array<any> {
     return Object.values(this.subFolderDependencies).map(fn)
   }
 }

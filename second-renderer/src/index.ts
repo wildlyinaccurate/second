@@ -1,6 +1,6 @@
-import Promise from 'bluebird'
+import * as Promise from 'bluebird'
 import proxyquire from 'proxyquire'
-import { getStyles, getStylesFrom, mergeAccumulators } from 'second-bundler'
+import * as Bundler from 'second-bundler'
 
 import makeContainer from './container'
 import Fetcher from './fetcher'
@@ -11,9 +11,14 @@ const RERENDER_DELAY = 100
 const makeGlobal = obj => Object.assign({}, obj, { '@global': true })
 
 export default class Renderer {
-  constructor ({ VDom, VDomServer }) {
+  VDom: VDOMLibrary
+  VDomRenderer: VDOMRenderer
+  fetcher: Fetcher
+  container: any
+
+  constructor ({ VDom, VDomRenderer }) {
     this.VDom = VDom
-    this.VDomServer = VDomServer
+    this.VDomRenderer = VDomRenderer
 
     this.fetcher = new Fetcher()
     this.container = makeContainer(VDom, this.fetcher)
@@ -32,7 +37,7 @@ export default class Renderer {
 
     return Promise.all([
       this.renderUntilComplete(Component, params),
-      getStyles(componentModule)
+      Bundler.getStyles(componentModule)
     ])
       .spread((markup, styles) => [
         markup,
@@ -42,13 +47,13 @@ export default class Renderer {
       .all()
       .spread((markup, styles, runtimeDependencyStyles) => ({
         markup,
-        styles: runtimeDependencyStyles.reduce(mergeAccumulators, styles)
+        styles: runtimeDependencyStyles.reduce(Bundler.mergeAccumulators, styles)
       }))
   }
 
   renderUntilComplete (Component, params) {
     return new Promise((resolve, reject) => {
-      const rendered = this.VDomServer.renderToString(
+      const rendered = this.VDomRenderer.renderToString(
         this.VDom.createElement(Component, params)
       )
 
@@ -70,14 +75,14 @@ export default class Renderer {
   }
 }
 
-function getRuntimeDependencyStyles (dependencyManager) {
-  const runtimeStyles = dependencyManager.mapDependencies(path => getStylesFrom(`${path}/public`))
+function getRuntimeDependencyStyles (dependencyManager): Promise<Bundler.StyleAccumulator[]> {
+  const runtimeStyles = dependencyManager.mapDependencies(path => Bundler.getStylesFrom(`${path}/public`))
 
   const runtimeSubfolderStyles = dependencyManager.mapSubfolderDependencies(path => {
     const pathParts = path.split('/')
     const subfolder = pathParts.pop()
 
-    return getStylesFrom(`${pathParts.join('/')}/public/${subfolder}`)
+    return Bundler.getStylesFrom(`${pathParts.join('/')}/public/${subfolder}`)
   })
 
   return Promise.all(runtimeStyles.concat(runtimeSubfolderStyles))
