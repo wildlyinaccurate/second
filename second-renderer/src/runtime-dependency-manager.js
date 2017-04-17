@@ -8,9 +8,11 @@ export default class RuntimeDependencyManager {
     this.subFolderDependencies = {}
   }
 
-  selfTransitiveThenUpdate (module) {
-    if (!this.subFolderDependencies[module]) {
-      this.subFolderDependencies[module] = relativeModuleFrom(module, caller())
+  selfTransitiveThenUpdate (subfolder) {
+    const callingModule = caller()
+
+    if (!this.subFolderDependencies[callingModule]) {
+      this.subFolderDependencies[callingModule] = relativeModuleFrom(subfolder, callingModule)
     }
   }
 
