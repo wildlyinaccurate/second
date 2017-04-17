@@ -6,6 +6,22 @@ import { map, trim } from 'lodash/fp'
 
 const { readFileAsync, statAsync } = Promise.promisifyAll(fs)
 
+const styleAccumulator = (core, enhanced) => ({
+  core: [].concat(core || []),
+  enhanced: [].concat(enhanced || [])
+})
+
+// Merge the second accumulator into the first by modifying the first
+const _mergeAccumulators = (acc1, acc2) => Object.assign(acc1, {
+  core: [...acc2.core, ...acc1.core],
+  enhanced: [...acc2.enhanced, ...acc1.enhanced]
+})
+
+// Immutable version of _mergeAccumulators
+export function mergeAccumulators (acc1, acc2) {
+  return _mergeAccumulators(Object.assign({}, acc1), acc2)
+}
+
 export function getStyles (module) {
   // Avoid a race condition with the renderer by ensuring the module is in
   // the require cache.
@@ -17,13 +33,7 @@ export function getStyles (module) {
   return recursivelyGetStyles(moduleRoot)
 }
 
-const emptyStyleAccumulator = () => ({
-  core: [],
-  enhanced: []
-})
-
-function recursivelyGetStyles (moduleRoot, acc = emptyStyleAccumulator()) {
-  const modulePkg = require(`${moduleRoot}/package.json`)
+export function getStylesFrom (moduleRoot) {
   const coreCssPath = `${moduleRoot}/public/core.css`
   const enhancedCssPath = `${moduleRoot}/public/enhanced.css`
 
@@ -35,15 +45,15 @@ function recursivelyGetStyles (moduleRoot, acc = emptyStyleAccumulator()) {
     ])
     .all()
     .then(map(trim))
-    .spread((core, enhanced) => {
-      if (core !== '') {
-        acc.core.push(core)
-      }
+    .spread(styleAccumulator)
+    .catch(() => {} /* No second-compatible styles in this module */)
+}
 
-      if (enhanced !== '') {
-        acc.enhanced.push(enhanced)
-      }
-    })
+function recursivelyGetStyles (moduleRoot, acc = styleAccumulator()) {
+  const modulePkg = require(`${moduleRoot}/package.json`)
+
+  return getStylesFrom(moduleRoot)
+    .then(styles => _mergeAccumulators(acc, styles))
     .then(() =>
       Object.keys(modulePkg.dependencies || {})
         .map(dep => recursivelyGetStyles(moduleRootFrom(dep, moduleRoot), acc))

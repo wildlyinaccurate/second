@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import proxyquire from 'proxyquire'
 import { propOr } from 'lodash/fp'
-import { getStyles } from 'second-bundler'
+import { getStyles, mergeAccumulators } from 'second-bundler'
 
 import getRendererLib from './renderer-lib'
 import makeContainer from './container'
@@ -12,11 +12,6 @@ const DEFAULT_RENDERER_LIB = 'preact-compat'
 const RERENDER_DELAY = 100
 
 const makeGlobal = obj => Object.assign({}, obj, { '@global': true })
-
-const combineStyles = (acc, style) => Object.assign({}, acc, {
-  core: [...style.core, ...acc.core],
-  enhanced: [...style.enhanced, ...acc.enhanced]
-})
 
 export default function render (componentModule, params) {
   const renderer = propOr(DEFAULT_RENDERER_LIB, '@@renderer', params)
@@ -46,7 +41,7 @@ export default function render (componentModule, params) {
     .all()
     .spread((markup, styles, runtimeDependencyStyles) => ({
       markup,
-      styles: runtimeDependencyStyles.reduce(combineStyles, styles)
+      styles: runtimeDependencyStyles.reduce(mergeAccumulators, styles)
     }))
 }
 
