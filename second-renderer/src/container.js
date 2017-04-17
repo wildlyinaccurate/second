@@ -1,7 +1,7 @@
-export default function makeContainer (React, fetcher) {
+export default function makeContainer (VDom, fetcher) {
   return {
     create (Component, params) {
-      const container = class SecondContainer extends React.Component {
+      const container = class SecondContainer extends VDom.Component {
         constructor (props) {
           super(props)
 
@@ -12,7 +12,7 @@ export default function makeContainer (React, fetcher) {
         }
 
         render () {
-          return React.createElement(
+          return VDom.createElement(
             Component,
             Object.assign({}, this.props, this.state.data)
           )

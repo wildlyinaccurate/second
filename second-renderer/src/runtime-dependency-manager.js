@@ -3,7 +3,7 @@ import { _resolveFilename } from 'module'
 import { dirname } from 'path'
 
 export default class RuntimeDependencyManager {
-  constructor() {
+  constructor () {
     this.dependencies = {}
     this.subFolderDependencies = {}
   }
@@ -34,7 +34,7 @@ export default class RuntimeDependencyManager {
 function relativeModuleFrom (module, from) {
   // Assume that the "from" module root is the directory immediately following
   // the final "node_modules/".
-  const fromRoot = from.match(/(.+node_modules\/[^\/]+)\/.+/)[1]
+  const fromRoot = from.match(/(.+node_modules\/[^/]+)\/.+/)[1]
 
   return `${fromRoot}/${module}`
 }

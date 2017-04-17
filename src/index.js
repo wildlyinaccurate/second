@@ -1,19 +1,28 @@
-import Promise from 'bluebird'
 import express from 'express'
-import render from 'second-renderer'
+import Renderer from 'second-renderer'
 
+import getRendererLib from './get-renderer-lib'
 import template from './template'
 
 const app = express()
 
+const DEFAULT_RENDERER_LIB = 'preact-compat'
+const [VDom, VDomServer] = getRendererLib(DEFAULT_RENDERER_LIB)
+const renderer = new Renderer({ VDom, VDomServer })
+
 const wrapStyle = style => `<style>${style}</style>`
 
-const renderModuleIntoEnvelope = (module, params) =>
-  render(module, params).then(component => ({
+const renderModuleIntoEnvelope = (module, params) => {
+  if (params['@@renderer']) {
+    [renderer.VDom, renderer.VDomServer] = getRendererLib(params['@@renderer'])
+  }
+
+  return renderer.render(module, params).then(component => ({
     head: component.styles.enhanced.map(wrapStyle),
     bodyInline: component.markup,
     bodyLast: []
   }))
+}
 
 app.get('/render/:module', (req, res) => {
   renderModuleIntoEnvelope(req.params.module, req.query)

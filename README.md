@@ -27,6 +27,10 @@ Renders `module` with second-renderer, and bundles its assets with second-bundle
 
 Renders `module` with second-renderer, and bundles its assets with second-bundler. Inserts the results into a standard HTML page.
 
+## Special query parameters
+
+- `@@renderer`: Specifies which library to render the component with. Available options are `react`, `preact`, `preact-compat`.
+
 ## Running the server
 
 Clone, install, and link everything up

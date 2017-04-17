@@ -15,10 +15,6 @@ Renders a component to HTML, returning a Promise that resolves to a string conta
 - `moduleName` _(String)_: A name which, when resolved by `require()`, returns a Second component.
 - `props` _(Object)_: Props that are passed directly to the component. Can also contain some special props that are understood by the renderer itself (see below).
 
-#### Special props
-
-- `@@renderer`: Specifies which library to render the component with. Available options are `react`, `preact`, `preact-compat`.
-
 ## The fetcher
 
 All fetching is done through Morph. Therefore, a valid certificate is required for fetching to work. Currently, only fetching from Morph data templates is supported. Fetching directly from a Morph fetcher service is not supported.
