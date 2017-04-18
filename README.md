@@ -2,7 +2,7 @@
 
 ## TODO
 
-- Render styles in the order that they appear in the (root-first) dependency tree
+- Render styles in the order that they appear in the (depth-first) dependency tree
 - Better support for Morph requester formats
 - Cache expensive operations between requests
 - Formalise some specs that can be converted into ✨ tests ✨
