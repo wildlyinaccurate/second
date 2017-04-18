@@ -54,6 +54,8 @@ npm link /path/to/morph-modules/news-top-stories
 npm install some-great-module
 ```
 
+> **Note:** To avoid "the bumping problem", consider using [`yarn install --flat`](https://yarnpkg.com/en/docs/cli/install#toc-yarn-install-flat) to install modules.
+
 Now build and start the server with
 
 ```
