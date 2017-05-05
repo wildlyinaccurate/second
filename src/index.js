@@ -42,4 +42,6 @@ app.engine('html', template)
 app.set('views', './views')
 app.set('view engine', 'html')
 
-app.listen(8082, () => console.log('Listening on port 8082 (http://127.0.0.1:8082)'))
+const APP_PORT = process.env.SECOND_API_PORT || 8082
+
+app.listen(APP_PORT, () => console.log(`Listening on port ${APP_PORT} (http://127.0.0.1:${APP_PORT})`))
