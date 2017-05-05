@@ -45,7 +45,9 @@ export default class Fetcher {
 
     return new Promise((resolve, reject) => {
       client.get({ url, json: true }, (err, resp, body) => {
-        if (resp.statusCode === 200) {
+        if (err) {
+          reject(err)
+        } else if (resp.statusCode === 200) {
           resolve({
             body,
             meta: {
@@ -57,7 +59,7 @@ export default class Fetcher {
             Promise.delay(REFETCH_DELAY).then(() => this.fetch(params))
           )
         } else {
-          reject(err)
+          reject(new Error(`Upstream request failed with HTTP code ${resp.statusCode}`))
         }
       })
     })
