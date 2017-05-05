@@ -23,7 +23,7 @@ export default class Fetcher {
   // the request has already been fulfilled
   request (requests) {
     return mapValues((params, name) => {
-      const key = params
+      const key = JSON.stringify(params)
 
       if (!this.requests.hasOwnProperty(key)) {
         this.requests[key] = this.fetch(params)
