@@ -1,0 +1,34 @@
+{
+  "name": "second-renderer",
+  "version": "0.1.0",
+  "description": "Second is a component rendering service",
+  "main": "lib/index.js",
+  "module": "src/index.js",
+  "scripts": {
+    "build": "npm run babel",
+    "babel": "babel src -d lib",
+    "test": "npm run eslint",
+    "eslint": "eslint --fix bin/ src/",
+    "prepublish": "npm run build"
+  },
+  "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
+  "license": "ISC",
+  "dependencies": {
+    "bbc-http-client": "git+ssh://git@github.com/bbc/bbc-http-client-node.git",
+    "bluebird": "^3.5.0",
+    "caller": "^1.0.1",
+    "lodash": "^4.17.4",
+    "proxyquire": "^1.7.11",
+    "second-bundler": "^0.1.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.3.3",
+    "eslint": "^3.19.0",
+    "eslint-config-standard": "^10.2.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-node": "^4.2.2",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1"
+  }
+}
