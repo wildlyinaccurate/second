@@ -5,6 +5,7 @@
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
   "license": "ISC",
   "scripts": {
+    "bootstrap": "lerna bootstrap",
     "start": "lerna run build && node packages/second-api"
   },
   "devDependencies": {
