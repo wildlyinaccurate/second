@@ -2,6 +2,7 @@ import caller from 'caller'
 import { _resolveFilename } from 'module'
 import { dirname } from 'path'
 
+// A mostly compatible morph-require shim
 export default class RuntimeDependencyManager {
   constructor () {
     this.dependencies = {}

@@ -12,7 +12,16 @@ npm install
 npm run lerna bootstrap
 ```
 
-## Running the server
+You'll also need to link or install the modules you want to render:
+
+```
+npm link /path/to/morph-modules/news-top-stories
+npm install my-component-module
+```
+
+## Running the API server
+
+See the [second-api documentation](packages/second-api) for more information about the API.
 
 ```
 npm start

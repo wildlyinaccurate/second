@@ -30,34 +30,4 @@ Renders `module` with second-renderer, and bundles its assets with second-bundle
 ## Special query parameters
 
 - `@@renderer`: Specifies which library to render the component with. Available options are `react`, `preact`, `preact-compat`.
-
-## Running the server
-
-Clone, install, and link everything up
-
-```
-git clone git@github.com:wildlyinaccurate/second.git
-cd ./second/second-bundler
-npm install
-cd ../second-renderer
-npm install
-npm link ../second-bundler
-cd ../
-npm install
-npm link ./second-renderer
-```
-
-Then link or install the modules you want to render, e.g.
-
-```
-npm link /path/to/morph-modules/news-top-stories
-npm install some-great-module
-```
-
-> **Note:** To avoid "the bumping problem", consider using [`yarn install --flat`](https://yarnpkg.com/en/docs/cli/install#toc-yarn-install-flat) to install modules.
-
-Now build and start the server with
-
-```
-npm run serve
-```
+- `@@static`: When this parameter is truthy, `renderToStaticMarkup` will be used to render components instead of `renderToString`.

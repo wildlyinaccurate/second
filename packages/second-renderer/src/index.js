@@ -1,58 +1,29 @@
 import Promise from 'bluebird'
-import proxyquire from 'proxyquire'
 import debug from 'debug'
-import { getStyles, getStylesFrom, mergeAccumulators } from 'second-bundler'
-
-import makeContainer from './container'
-import Fetcher from './fetcher'
-import RuntimeDependencyManager from './runtime-dependency-manager'
 
 const RERENDER_DELAY = 100
-
 const log = debug('second:renderer')
-const makeGlobal = obj => Object.assign({}, obj, { '@global': true })
 
 export default class Renderer {
-  constructor ({ VDom, VDomServer }) {
+  constructor ({ VDom, VDomServer, fetcher, loadComponent = require }) {
     this.VDom = VDom
     this.VDomServer = VDomServer
-
-    this.fetcher = new Fetcher()
-    this.container = makeContainer(VDom, this.fetcher)
+    this.fetcher = fetcher
+    this.loadComponent = loadComponent
   }
 
   render (componentModule, params) {
-    const dependencyManager = new RuntimeDependencyManager()
-    dependencyManager['@global'] = true
+    const Component = this.loadComponent(componentModule)
 
-    const Component = proxyquire.noCallThru()(componentModule, {
-      'bbc-morph-grandstand': () => {},
-      'morph-container': makeGlobal(this.container),
-      'morph-require': dependencyManager,
-      'react': makeGlobal(this.VDom)
-    })
-
-    return Promise.all([
-      this.renderUntilComplete(Component, params),
-      getStyles(componentModule)
-    ])
-      .spread((markup, styles) => [
-        markup,
-        styles,
-        getRuntimeDependencyStyles(dependencyManager)
-      ])
-      .all()
-      .spread((markup, styles, runtimeDependencyStyles) => ({
-        markup,
-        styles: runtimeDependencyStyles.reduce(mergeAccumulators, styles)
-      }))
+    return this.renderUntilComplete(Component, params)
   }
 
   renderUntilComplete (Component, params) {
     log(`Starting render of ${Component.wrappedComponentName}`)
 
     return new Promise((resolve, reject) => {
-      const rendered = this.VDomServer.renderToString(
+      const renderFn = params['@@static'] ? 'renderToStaticMarkup' : 'renderToString'
+      const rendered = this.VDomServer[renderFn](
         this.VDom.createElement(Component, params)
       )
 
@@ -77,17 +48,4 @@ export default class Renderer {
       throw e
     })
   }
-}
-
-function getRuntimeDependencyStyles (dependencyManager) {
-  const runtimeStyles = dependencyManager.mapDependencies(path => getStylesFrom(`${path}/public`))
-
-  const runtimeSubfolderStyles = dependencyManager.mapSubfolderDependencies(path => {
-    const pathParts = path.split('/')
-    const subfolder = pathParts.pop()
-
-    return getStylesFrom(`${pathParts.join('/')}/public/${subfolder}`)
-  })
-
-  return Promise.all(runtimeStyles.concat(runtimeSubfolderStyles))
 }
