@@ -1,5 +1,6 @@
 import Promise from 'bluebird'
 import proxyquire from 'proxyquire'
+import debug from 'debug'
 import { getStyles, getStylesFrom, mergeAccumulators } from 'second-bundler'
 
 import makeContainer from './container'
@@ -8,6 +9,7 @@ import RuntimeDependencyManager from './runtime-dependency-manager'
 
 const RERENDER_DELAY = 100
 
+const log = debug('second:renderer')
 const makeGlobal = obj => Object.assign({}, obj, { '@global': true })
 
 export default class Renderer {
@@ -47,6 +49,8 @@ export default class Renderer {
   }
 
   renderUntilComplete (Component, params) {
+    log(`Starting render of ${Component.wrappedComponentName}`)
+
     return new Promise((resolve, reject) => {
       const rendered = this.VDomServer.renderToString(
         this.VDom.createElement(Component, params)
@@ -54,14 +58,19 @@ export default class Renderer {
 
       if (this.fetcher.hasOutstandingRequests()) {
         // Requests were made to the fetcher which have not yet been resolved
+        log(`Fetcher has outstanding requests. Waiting ${RERENDER_DELAY}ms.`)
+
         return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(Component, params))
       }
 
+      log(`Completed render of ${Component.wrappedComponentName}`)
       resolve(rendered)
     }).catch(e => {
       if (this.fetcher.hasOutstandingRequests()) {
         // The error was potentially due to missing data in a downstream
         // component; try again
+        log(`Error thrown by ${Component.wrappedComponentName}. Fetcher has outstanding requests. Waiting ${RERENDER_DELAY}ms.`)
+
         return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(Component, params))
       }
 
