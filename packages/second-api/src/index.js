@@ -39,7 +39,7 @@ app.get('/preview/:module', (req, res) => {
 })
 
 app.engine('html', template)
-app.set('views', './views')
+app.set('views', `${__dirname}/../views`)
 app.set('view engine', 'html')
 
 const APP_PORT = process.env.SECOND_API_PORT || 8082
