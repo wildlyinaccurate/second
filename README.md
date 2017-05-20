@@ -9,7 +9,7 @@ Second is a component rendering service.
 ```
 git clone git@github.com:wildlyinaccurate/second.git
 npm install
-npm run bootstrap
+npm run lerna bootstrap
 ```
 
 ## Running the server
@@ -22,4 +22,18 @@ Second understands the `NODE_ENV` and [`DEBUG`](https://www.npmjs.com/package/de
 
 ```
 NODE_ENV=production DEBUG=second:* npm start
+```
+
+## Local development
+
+Run the tests during development with:
+
+```
+npm run lerna run test
+```
+
+Or if you have [Lerna](https://github.com/lerna/lerna) installed globally:
+
+```
+lerna run test
 ```
