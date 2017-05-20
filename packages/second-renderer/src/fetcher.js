@@ -8,24 +8,27 @@ const mapValuesWithKey = fp.mapValues.convert({ cap: false })
 const REFETCH_DELAY = 100
 const client = new HttpClient({ timeout: 10000 })
 const paramsToUriString = params => map(join('/'), toPairs(params))
-const log = debug('second:renderer:fetcher')
+const log = debug('second:fetcher')
 
 export default class Fetcher {
   constructor () {
     this.requests = {}
+    this.unreadResponses = false
   }
 
   hasOutstandingRequests () {
-    return this.outstandingRequests().length > 0
+    return this.unreadResponses || this.outstandingRequests().length > 0
   }
 
   outstandingRequests () {
-    return filter(req => !req.isFulfilled(), this.requests)
+    return filter(req => req.isPending(), this.requests)
   }
 
   // Called by clients; queues requests for fetching or returns responses if
   // the request has already been fulfilled
   request (requests) {
+    this.unreadResponses = false
+
     return mapValuesWithKey((params, name) => {
       const key = JSON.stringify(params)
 
@@ -37,7 +40,6 @@ export default class Fetcher {
       const request = this.requests[key]
 
       if (request.isFulfilled()) {
-        log('Response received for', name)
         return request.value()
       }
 
@@ -55,6 +57,9 @@ export default class Fetcher {
           reject(err)
         } else if (resp.statusCode === 200) {
           log(`[200] ${url}`)
+
+          this.unreadResponses = true
+
           resolve({
             body,
             meta: {
@@ -62,10 +67,13 @@ export default class Fetcher {
             }
           })
         } else if (resp.statusCode === 202) {
+          log(`[202] re-fetching in ${REFETCH_DELAY}ms ${url}`)
           resolve(
             Promise.delay(REFETCH_DELAY).then(() => this.fetch(params))
           )
         } else {
+          this.unreadResponses = false
+
           reject(new Error(`Upstream request failed with HTTP code ${resp.statusCode}`))
         }
       })
