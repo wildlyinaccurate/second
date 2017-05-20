@@ -19,6 +19,8 @@ export default function makeContainer (VDom, fetcher) {
         }
       }
 
+      container.wrappedComponentName = Component.displayName
+
       return container
     }
   }
