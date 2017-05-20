@@ -15,7 +15,6 @@ const makeGlobal = obj => Object.assign({}, obj, { '@global': true })
 const wrapStyle = style => `<style>${style}</style>`
 
 const fetcher = new Fetcher()
-const container = makeContainer(VDom, fetcher)
 
 const bundler = new Bundler({
   // Traversing the dependency tree results in all grandstand variants being
@@ -36,7 +35,7 @@ const renderer = new Renderer({
   loadComponent: function (componentModule) {
     return proxyquire.noCallThru()(componentModule, {
       'bbc-morph-grandstand': () => {},
-      'morph-container': makeGlobal(container),
+      'morph-container': makeGlobal(makeContainer(this.VDom, this.fetcher)),
       'morph-require': dependencyManager,
       'react': makeGlobal(this.VDom)
     })
@@ -46,8 +45,10 @@ const renderer = new Renderer({
 export default function renderModuleIntoEnvelope (module, params) {
   [renderer.VDom, renderer.VDomServer] = getRendererLib(params['@@renderer'] || DEFAULT_RENDERER_LIB)
 
+  const renderFn = params['@@static'] ? 'renderStatic' : 'render'
+
   return Promise.all([
-    renderer.render(module, params),
+    renderer[renderFn](module, params),
     bundler.getStyles(module)
   ])
     .spread((markup, styles) => [

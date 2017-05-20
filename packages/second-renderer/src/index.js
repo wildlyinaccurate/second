@@ -13,17 +13,26 @@ export default class Renderer {
   }
 
   render (componentModule, params) {
-    const Component = this.loadComponent(componentModule)
-
-    return this.renderUntilComplete(Component, params)
+    return this.renderUntilComplete(
+      this.VDomServer.renderToString,
+      this.loadComponent(componentModule),
+      params
+    )
   }
 
-  renderUntilComplete (Component, params) {
+  renderStatic (componentModule, params) {
+    return this.renderUntilComplete(
+      this.VDomServer.renderToStaticMarkup,
+      this.loadComponent(componentModule),
+      params
+    )
+  }
+
+  renderUntilComplete (render, Component, params) {
     log(`Starting render of ${Component.wrappedComponentName}`)
 
     return new Promise((resolve, reject) => {
-      const renderFn = params['@@static'] ? 'renderToStaticMarkup' : 'renderToString'
-      const rendered = this.VDomServer[renderFn](
+      const rendered = render(
         this.VDom.createElement(Component, params)
       )
 
@@ -31,7 +40,7 @@ export default class Renderer {
         // Requests were made to the fetcher which have not yet been resolved
         log(`Fetcher has outstanding requests. Waiting ${RERENDER_DELAY}ms.`)
 
-        return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(Component, params))
+        return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(render, Component, params))
       }
 
       log(`Completed render of ${Component.wrappedComponentName}`)
@@ -42,7 +51,7 @@ export default class Renderer {
         // component; try again
         log(`Error thrown by ${Component.wrappedComponentName}. Fetcher has outstanding requests. Waiting ${RERENDER_DELAY}ms.`)
 
-        return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(Component, params))
+        return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(render, Component, params))
       }
 
       throw e
