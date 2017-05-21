@@ -1,4 +1,5 @@
 import Promise from 'bluebird'
+import { dirname } from 'path'
 import HttpClient from 'bbc-http-client'
 import proxyquire from 'proxyquire'
 import Bundler from 'second-bundler'
@@ -46,13 +47,11 @@ const renderer = new Renderer({
 
 const loadComponent = componentModule => {
   return proxyquire.noCallThru()(componentModule, {
-    'bbc-morph-grandstand': () => {},
     'morph-container': makeGlobal(makeContainer(VDom, fetcher)),
     'morph-require': dependencyManager,
     'react': makeGlobal(VDom)
   })
 }
-
 
 export default function renderModuleIntoEnvelope (module, params) {
   [renderer.VDom, renderer.VDomServer] = getRendererLib(params['@@renderer'] || DEFAULT_RENDERER_LIB)
@@ -60,9 +59,15 @@ export default function renderModuleIntoEnvelope (module, params) {
   const Component = loadComponent(module)
   const renderFn = params['@@static'] ? 'renderStatic' : 'render'
 
+  // Load the module and its dependency tree into the require cache otherwise
+  // the morph-require shim doesn't work
+  require(module)
+
+  const moduleRoot = dirname(require.resolve(`${module}/package.json`))
+
   return Promise.all([
     renderer[renderFn](Component, params),
-    bundler.getStyles(module)
+    bundler.getStyles(moduleRoot)
   ])
     .spread((markup, styles) => [
       markup,
@@ -81,7 +86,7 @@ export default function renderModuleIntoEnvelope (module, params) {
     }))
 }
 
-function getRuntimeDependencyStyles (dependencyManager) {
+function getRuntimeDependencyStyles () {
   const runtimeStyles = dependencyManager.mapDependencies(path => bundler.getStylesFrom(`${path}/public`))
 
   const runtimeSubfolderStyles = dependencyManager.mapSubfolderDependencies(path => {

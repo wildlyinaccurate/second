@@ -1,9 +1,11 @@
 import Promise from 'bluebird'
 import fs from 'fs'
+import debug from 'debug'
 import { _resolveFilename } from 'module'
 import { dirname } from 'path'
 import { map, trim } from 'lodash/fp'
 
+const log = debug('second:bundler')
 const { readFileAsync, statAsync } = Promise.promisifyAll(fs)
 
 // Data structure used to store component styles
@@ -28,15 +30,14 @@ export default class Bundler {
     return _mergeAccumulators(Object.assign({}, acc1), acc2)
   }
 
-  getStyles (module) {
-    // Avoid a race condition with the renderer by ensuring the module is in
-    // the require cache.
-    require(module)
+  getStyles (moduleRoot) {
+    const modulePkgPath = `${moduleRoot}/package.json`
+    const modulePkg = require(modulePkgPath)
 
-    const modulePkgPath = require.resolve(`${module}/package.json`)
-    const moduleRoot = dirname(modulePkgPath)
+    log(`Getting styles for ${modulePkg.name}`)
 
     return this.recursivelyGetStyles(moduleRoot)
+      .tap(() => log(`All styles resolved for ${modulePkg.name}`))
   }
 
   getStylesFrom (directory) {
@@ -59,6 +60,7 @@ export default class Bundler {
     const modulePkg = require(`${moduleRoot}/package.json`)
 
     if (this.excludeModules.includes(modulePkg.name)) {
+      log(`Ignoring ${modulePkg.name}`)
       return Promise.resolve(acc)
     }
 
