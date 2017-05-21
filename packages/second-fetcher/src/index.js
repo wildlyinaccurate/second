@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import fp, { clone, filter, join, map, toPairs } from 'lodash/fp'
+import fp, { clone, filter } from 'lodash/fp'
 import HttpClient from 'bbc-http-client'
 import debug from 'debug'
 
@@ -7,13 +7,30 @@ const mapValuesWithKey = fp.mapValues.convert({ cap: false })
 
 const REFETCH_DELAY = 100
 const client = new HttpClient({ timeout: 10000 })
-const paramsToUriString = params => map(join('/'), toPairs(params))
 const log = debug('second:fetcher')
 
 export default class Fetcher {
-  constructor () {
+  constructor ({ handlers = [] }) {
     this.requests = {}
     this.unreadResponses = false
+    this.handlers = handlers
+  }
+
+  getUrlFor (_params) {
+    const params = clone(_params)
+
+    for (const handler of this.handlers) {
+      log(`Checking ${handler.name}`)
+      const returnVal = handler(params)
+
+      if (returnVal) {
+        log(`Using ${handler.name}`)
+
+        return returnVal
+      }
+    }
+
+    throw new Error(`No handler could be found for data parameters ${JSON.stringify(params)}`)
   }
 
   hasOutstandingRequests () {
@@ -50,7 +67,7 @@ export default class Fetcher {
 
   // Make an external call to fetch data
   fetch (params) {
-    const url = this.makeMorphUrl(clone(params.uri))
+    const url = typeof params === 'string' ? params : this.getUrlFor(params)
 
     return new Promise((resolve, reject) => {
       client.get({ url, json: true }, (err, resp, body) => {
@@ -79,16 +96,5 @@ export default class Fetcher {
         }
       })
     })
-  }
-
-  makeMorphUrl (params) {
-    const template = params.data
-
-    delete params.data
-
-    const encodedParams = mapValuesWithKey(encodeURIComponent, params)
-    const uriParams = paramsToUriString(encodedParams).join('/')
-
-    return `https://morph.api.bbci.co.uk/data/${template}/${uriParams}`
   }
 }

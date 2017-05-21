@@ -6,6 +6,7 @@ import Fetcher from 'second-fetcher'
 
 import RuntimeDependencyManager from './shims/morph-require'
 import makeContainer from './shims/morph-container'
+import morphDataObjectToUrl from './shims/morph-data-object-to-url'
 import getRendererLib from './get-renderer-lib'
 
 const DEFAULT_RENDERER_LIB = 'preact-compat'
@@ -14,7 +15,9 @@ const [VDom, VDomServer] = getRendererLib(DEFAULT_RENDERER_LIB)
 const makeGlobal = obj => Object.assign({}, obj, { '@global': true })
 const wrapStyle = style => `<style>${style}</style>`
 
-const fetcher = new Fetcher()
+const fetcher = new Fetcher({
+  handlers: [morphDataObjectToUrl]
+})
 
 const bundler = new Bundler({
   // Traversing the dependency tree results in all grandstand variants being
