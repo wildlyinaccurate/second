@@ -1,5 +1,6 @@
 import { h } from 'preact'
 import createContainer from './container'
+import Repository from './repository'
 
 function EventList (props) {
   const events = props.events.body
@@ -7,7 +8,7 @@ function EventList (props) {
   return h('ul', {}, events.filter(ev => ev.type === 'WatchEvent').map(ev =>
     h('li', {}, [
       `${ev.actor.display_login} ${ev.payload.action} watching `,
-      h('a', { href: `https://github.com/${ev.repo.name}` }, ev.repo.name)
+      h(Repository, { name: ev.repo.name })
     ])
   ))
 }
