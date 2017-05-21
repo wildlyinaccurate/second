@@ -5,25 +5,24 @@ const RERENDER_DELAY = 100
 const log = debug('second:renderer')
 
 export default class Renderer {
-  constructor ({ VDom, VDomServer, fetcher, loadComponent = require }) {
+  constructor ({ VDom, VDomServer, fetcher }) {
     this.VDom = VDom
     this.VDomServer = VDomServer
     this.fetcher = fetcher
-    this.loadComponent = loadComponent
   }
 
-  render (componentModule, params) {
+  render (Component, params) {
     return this.renderUntilComplete(
       this.VDomServer.renderToString,
-      this.loadComponent(componentModule),
+      Component,
       params
     )
   }
 
-  renderStatic (componentModule, params) {
+  renderStatic (Component, params) {
     return this.renderUntilComplete(
       this.VDomServer.renderToStaticMarkup,
-      this.loadComponent(componentModule),
+      Component,
       params
     )
   }
