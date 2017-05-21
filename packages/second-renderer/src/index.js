@@ -5,10 +5,10 @@ const RERENDER_DELAY = 100
 const log = debug('second:renderer')
 
 export default class Renderer {
-  constructor ({ VDom, VDomServer, fetcher }) {
+  constructor ({ VDom, VDomServer, shouldTryAgain = () => false }) {
     this.VDom = VDom
     this.VDomServer = VDomServer
-    this.fetcher = fetcher
+    this.shouldTryAgain = shouldTryAgain
   }
 
   render (Component, params) {
@@ -35,9 +35,8 @@ export default class Renderer {
         this.VDom.createElement(Component, params)
       )
 
-      if (this.fetcher.hasOutstandingRequests()) {
-        // Requests were made to the fetcher which have not yet been resolved
-        log(`Fetcher has outstanding requests. Waiting ${RERENDER_DELAY}ms.`)
+      if (this.shouldTryAgain()) {
+        log(`Renderer was told to try again. Waiting ${RERENDER_DELAY}ms.`)
 
         return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(render, Component, params))
       }
@@ -45,10 +44,8 @@ export default class Renderer {
       log(`Completed render of ${Component.displayName}`)
       resolve(rendered)
     }).catch(e => {
-      if (this.fetcher.hasOutstandingRequests()) {
-        // The error was potentially due to missing data in a downstream
-        // component; try again
-        log(`Error thrown by ${Component.displayName}. Fetcher has outstanding requests. Waiting ${RERENDER_DELAY}ms.`)
+      if (this.shouldTryAgain()) {
+        log(`Error thrown by ${Component.displayName}, but renderer was told to try again. Waiting ${RERENDER_DELAY}ms.`)
 
         return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(render, Component, params))
       }

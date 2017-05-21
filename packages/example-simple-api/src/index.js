@@ -11,7 +11,7 @@ const app = express()
 const renderer = new Renderer({
   VDom,
   VDomServer,
-  fetcher
+  shouldTryAgain: () => fetcher.hasOutstandingRequests()
 })
 
 app.get('/events/:user', (req, res) => {
