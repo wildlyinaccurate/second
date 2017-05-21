@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import debug from 'debug'
 
-const RERENDER_DELAY = 100
+const INITIAL_RERENDER_DELAY = 100
 const log = debug('second:renderer')
 
 export default class Renderer {
@@ -11,7 +11,13 @@ export default class Renderer {
     this.componentIsReady = componentIsReady
   }
 
+  reset () {
+    this._reRenderDelay = INITIAL_RERENDER_DELAY
+  }
+
   render (Component, params) {
+    this.reset()
+
     return this.renderUntilComplete(
       this.VDomServer.renderToString,
       Component,
@@ -20,6 +26,8 @@ export default class Renderer {
   }
 
   renderStatic (Component, params) {
+    this.reset()
+
     return this.renderUntilComplete(
       this.VDomServer.renderToStaticMarkup,
       Component,
@@ -30,6 +38,8 @@ export default class Renderer {
   renderUntilComplete (render, Component, params) {
     log(`Starting render of ${Component.displayName}`)
 
+    const delayTime = this.reRenderDelay()
+
     return new Promise((resolve, reject) => {
       const rendered = render(
         this.VDom.createElement(Component, params)
@@ -38,7 +48,7 @@ export default class Renderer {
       if (!this.componentIsReady()) {
         log(`Component is not ready. Trying again in ${delayTime}ms.`)
 
-        return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(render, Component, params))
+        return Promise.delay(delayTime).then(() => this.renderUntilComplete(render, Component, params))
       }
 
       log(`Completed render of ${Component.displayName}`)
@@ -47,10 +57,18 @@ export default class Renderer {
       if (!this.componentIsReady()) {
         log(`Error thrown by ${Component.displayName}, but component is not ready. Trying again in ${delayTime}ms.`)
 
-        return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(render, Component, params))
+        return Promise.delay(delayTime).then(() => this.renderUntilComplete(render, Component, params))
       }
 
       throw e
     })
+  }
+
+  reRenderDelay () {
+    const delay = this._reRenderDelay
+
+    this._reRenderDelay = Math.ceil(this._reRenderDelay * 1.1)
+
+    return delay
   }
 }
