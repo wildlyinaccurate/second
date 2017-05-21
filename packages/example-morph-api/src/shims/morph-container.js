@@ -5,7 +5,6 @@ export default function makeContainer (VDom, fetcher) {
         constructor (props) {
           super(props)
 
-          this.displayName = `SecondContainer/${Component.displayName}`
           this.state = {
             data: fetcher.request(params.data(props))
           }
@@ -19,7 +18,7 @@ export default function makeContainer (VDom, fetcher) {
         }
       }
 
-      container.wrappedComponentName = Component.displayName
+      container.displayName = `SecondContainer/${Component.displayName}`
 
       return container
     }

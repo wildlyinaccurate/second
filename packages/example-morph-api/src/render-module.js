@@ -1,4 +1,5 @@
 import Promise from 'bluebird'
+import HttpClient from 'bbc-http-client'
 import proxyquire from 'proxyquire'
 import Bundler from 'second-bundler'
 import Renderer from 'second-renderer'
@@ -15,8 +16,16 @@ const [VDom, VDomServer] = getRendererLib(DEFAULT_RENDERER_LIB)
 const makeGlobal = obj => Object.assign({}, obj, { '@global': true })
 const wrapStyle = style => `<style>${style}</style>`
 
+const client = new HttpClient({ timeout: 10000 })
+
 const fetcher = new Fetcher({
-  handlers: [morphDataObjectToUrl]
+  handlers: [morphDataObjectToUrl],
+  request: (url) => client.get({
+    url,
+    json: true,
+    resolveWithFullResponse: true,
+    simple: false
+  })
 })
 
 const bundler = new Bundler({
@@ -32,26 +41,27 @@ dependencyManager['@global'] = true
 const renderer = new Renderer({
   VDom,
   VDomServer,
-  fetcher,
-
-  // Morph-compatible shims
-  loadComponent: function (componentModule) {
-    return proxyquire.noCallThru()(componentModule, {
-      'bbc-morph-grandstand': () => {},
-      'morph-container': makeGlobal(makeContainer(this.VDom, this.fetcher)),
-      'morph-require': dependencyManager,
-      'react': makeGlobal(this.VDom)
-    })
-  }
+  fetcher
 })
+
+const loadComponent = componentModule => {
+  return proxyquire.noCallThru()(componentModule, {
+    'bbc-morph-grandstand': () => {},
+    'morph-container': makeGlobal(makeContainer(VDom, fetcher)),
+    'morph-require': dependencyManager,
+    'react': makeGlobal(VDom)
+  })
+}
+
 
 export default function renderModuleIntoEnvelope (module, params) {
   [renderer.VDom, renderer.VDomServer] = getRendererLib(params['@@renderer'] || DEFAULT_RENDERER_LIB)
 
+  const Component = loadComponent(module)
   const renderFn = params['@@static'] ? 'renderStatic' : 'render'
 
   return Promise.all([
-    renderer[renderFn](module, params),
+    renderer[renderFn](Component, params),
     bundler.getStyles(module)
   ])
     .spread((markup, styles) => [
