@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import fp, { clone, filter } from 'lodash/fp'
+import fp, { clone, filter, propOr } from 'lodash/fp'
 import request from 'request-promise'
 import debug from 'debug'
 
@@ -34,31 +34,51 @@ export default class Fetcher {
   }
 
   hasOutstandingRequests () {
-    return this.unreadResponses || this.outstandingRequests().length > 0
+    return this.outstandingRequests().length > 0
   }
 
   outstandingRequests () {
-    return filter(req => req.isPending(), this.requests)
+    return filter(req => req.promise.isPending() || !req.read, this.requests)
+  }
+
+  hasPendingMandatoryRequests () {
+    return this.pendingMandatoryRequests().length > 0
+  }
+
+  pendingMandatoryRequests () {
+    return filter(req => req.mustSucceed && req.promise.isPending(), this.requests)
   }
 
   // Called by clients; queues requests for fetching or returns responses if
   // the request has already been fulfilled
   request (requests) {
-    this.unreadResponses = false
-
     return mapValuesWithKey((params, name) => {
       const key = JSON.stringify(params)
 
       if (!this.requests.hasOwnProperty(key)) {
         log(`Making request for ${name}`)
-        this.requests[key] = this.fetch(params)
+
+        this.requests[key] = {
+          promise: this.fetch(params),
+          read: false,
+          mustSucceed: propOr(true, 'mustSucceed', params)
+        }
+
+        this.requests[key].promise.catch((error) => {
+          this.requests[key].read = true
+
+          throw error
+        })
       }
 
       const request = this.requests[key]
 
-      if (request.isFulfilled()) {
+      if (request.promise.isFulfilled()) {
         log(`Returning fulfilled request for ${name}`)
-        return request.value()
+
+        request.read = true
+
+        return request.promise.value()
       }
 
       return {}
@@ -79,13 +99,11 @@ export default class Fetcher {
 
   // Make an external call to fetch data
   fetch (params) {
-    const url = typeof params === 'string' ? params : this.getUrlFor(params)
+    const url = typeof params.uri === 'string' ? params.uri : this.getUrlFor(params.uri)
 
     return this.makeRequest(url).then(({ body, statusCode }) => {
       if (statusCode === 200) {
         log(`[200] ${url}`)
-
-        this.unreadResponses = true
 
         return {
           body,
@@ -96,8 +114,6 @@ export default class Fetcher {
 
         return Promise.delay(REFETCH_DELAY).then(() => this.fetch(params))
       } else {
-        this.unreadResponses = false
-
         throw new Error(`[${statusCode}] Upstream request failed ${url} / ${body}`)
       }
     })

@@ -16,6 +16,8 @@ EventList.displayName = 'EventList'
 
 export default createContainer(EventList, {
   data: (props) => ({
-    events: `https://api.github.com/users/${props.user}/events`
+    events: {
+      uri: `https://api.github.com/users/${props.user}/events?access_token=6d3d807fdbc57453b631809754a2d85c3ecec7ff`
+    }
   })
 })
