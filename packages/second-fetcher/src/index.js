@@ -33,13 +33,14 @@ export default class Fetcher {
       const key = JSON.stringify(params)
 
       if (!this.requests.hasOwnProperty(key)) {
-        log('Making request for', name)
+        log(`Making request for ${name}`)
         this.requests[key] = this.fetch(params)
       }
 
       const request = this.requests[key]
 
       if (request.isFulfilled()) {
+        log(`Returning fulfilled request for ${name}`)
         return request.value()
       }
 
@@ -74,7 +75,7 @@ export default class Fetcher {
         } else {
           this.unreadResponses = false
 
-          reject(new Error(`Upstream request failed with HTTP code ${resp.statusCode}`))
+          reject(new Error(`[${resp.statusCode}] Upstream request failed ${url}`))
         }
       })
     })
