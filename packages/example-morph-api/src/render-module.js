@@ -42,7 +42,7 @@ dependencyManager['@global'] = true
 const renderer = new Renderer({
   VDom,
   VDomServer,
-  shouldTryAgain: () => fetcher.hasOutstandingRequests()
+  componentIsReady: () => !fetcher.hasOutstandingRequests()
 })
 
 const loadComponent = componentModule => {

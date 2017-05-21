@@ -5,10 +5,10 @@ const RERENDER_DELAY = 100
 const log = debug('second:renderer')
 
 export default class Renderer {
-  constructor ({ VDom, VDomServer, shouldTryAgain = () => false }) {
+  constructor ({ VDom, VDomServer, componentIsReady = () => true }) {
     this.VDom = VDom
     this.VDomServer = VDomServer
-    this.shouldTryAgain = shouldTryAgain
+    this.componentIsReady = componentIsReady
   }
 
   render (Component, params) {
@@ -35,8 +35,8 @@ export default class Renderer {
         this.VDom.createElement(Component, params)
       )
 
-      if (this.shouldTryAgain()) {
-        log(`Renderer was told to try again. Waiting ${RERENDER_DELAY}ms.`)
+      if (!this.componentIsReady()) {
+        log(`Component is not ready. Trying again in ${delayTime}ms.`)
 
         return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(render, Component, params))
       }
@@ -44,8 +44,8 @@ export default class Renderer {
       log(`Completed render of ${Component.displayName}`)
       resolve(rendered)
     }).catch(e => {
-      if (this.shouldTryAgain()) {
-        log(`Error thrown by ${Component.displayName}, but renderer was told to try again. Waiting ${RERENDER_DELAY}ms.`)
+      if (!this.componentIsReady()) {
+        log(`Error thrown by ${Component.displayName}, but component is not ready. Trying again in ${delayTime}ms.`)
 
         return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(render, Component, params))
       }
