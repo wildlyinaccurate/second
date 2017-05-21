@@ -28,7 +28,7 @@ export default class Renderer {
   }
 
   renderUntilComplete (render, Component, params) {
-    log(`Starting render of ${Component.wrappedComponentName}`)
+    log(`Starting render of ${Component.displayName}`)
 
     return new Promise((resolve, reject) => {
       const rendered = render(
@@ -42,13 +42,13 @@ export default class Renderer {
         return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(render, Component, params))
       }
 
-      log(`Completed render of ${Component.wrappedComponentName}`)
+      log(`Completed render of ${Component.displayName}`)
       resolve(rendered)
     }).catch(e => {
       if (this.fetcher.hasOutstandingRequests()) {
         // The error was potentially due to missing data in a downstream
         // component; try again
-        log(`Error thrown by ${Component.wrappedComponentName}. Fetcher has outstanding requests. Waiting ${RERENDER_DELAY}ms.`)
+        log(`Error thrown by ${Component.displayName}. Fetcher has outstanding requests. Waiting ${RERENDER_DELAY}ms.`)
 
         return Promise.delay(RERENDER_DELAY).then(() => this.renderUntilComplete(render, Component, params))
       }
