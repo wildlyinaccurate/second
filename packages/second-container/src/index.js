@@ -10,10 +10,12 @@ export default function containerFactory ({ fetcher, Component, createElement })
       }
 
       render () {
-        return createElement(
-          WrappedComponent,
-          Object.assign({}, this.props, this.state.data)
-        )
+        if (!fetcher.hasPendingMandatoryRequests()) {
+          return createElement(
+            WrappedComponent,
+            Object.assign({}, this.props, this.state.data)
+          )
+        }
       }
     }
 
