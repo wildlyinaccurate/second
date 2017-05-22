@@ -1,7 +1,7 @@
 {
-  "name": "second-example-simple-api",
+  "name": "second",
   "version": "1.0.0",
-  "description": "A simple Second example",
+  "description": "",
   "main": "lib/index.js",
   "module": "src/index.js",
   "scripts": {
@@ -17,11 +17,12 @@
     "express": "^4.15.2",
     "preact": "^8.1.0",
     "preact-compat": "^3.14.3",
-    "second": "^1.0.0"
+    "second-container": "^1.0.0",
+    "second-fetcher": "^1.0.0",
+    "second-renderer": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.3.3",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.0",

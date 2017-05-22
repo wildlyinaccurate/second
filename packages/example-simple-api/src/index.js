@@ -1,21 +1,17 @@
 import express from 'express'
 import VDom from 'preact-compat'
 import VDomServer from 'preact-compat/server'
-import Renderer from 'second-renderer'
-
-import Page from './components/page'
-import fetcher from './global-fetcher'
+import second from 'second'
 import template from './template'
 
+second.init({ VDom, VDomServer })
+
 const app = express()
-const renderer = new Renderer({
-  VDom,
-  VDomServer,
-  componentIsReady: () => !fetcher.hasOutstandingRequests()
-})
 
 app.get('/events/:user', (req, res) => {
-  renderer.render(Page, req.params).then(content =>
+  const Page = require('./components/page').default
+
+  second.renderStatic(Page, req.params).then(content =>
     res.render('page', { content })
   )
 })

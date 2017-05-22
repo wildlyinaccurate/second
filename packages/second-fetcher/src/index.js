@@ -93,6 +93,7 @@ export default class Fetcher {
       json: true,
       resolveWithFullResponse: true,
       simple: false,
+      timeout: 5000,
       headers: {
         'User-Agent': 'second-fetcher'
       }

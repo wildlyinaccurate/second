@@ -1,5 +1,5 @@
 import { h } from 'preact'
-import createContainer from './container'
+import second from 'second'
 
 function Repository (props) {
   const repo = props.repo.body
@@ -13,7 +13,7 @@ function Repository (props) {
 
 Repository.displayName = 'Repository'
 
-export default createContainer(Repository, {
+export default second.createContainer(Repository, {
   data: (props) => ({
     repo: {
       uri: `https://api.github.com/repos/${props.name}?access_token=6d3d807fdbc57453b631809754a2d85c3ecec7ff`
