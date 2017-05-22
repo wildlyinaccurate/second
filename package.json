@@ -6,7 +6,7 @@
   "license": "ISC",
   "scripts": {
     "lerna": "lerna",
-    "start": "lerna run build && node packages/example-morph-api"
+    "start": "lerna run build && node packages/example-simple-api"
   },
   "devDependencies": {
     "lerna": "^2.0.0-rc.4"
