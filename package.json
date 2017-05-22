@@ -1,14 +1,15 @@
 {
-  "name": "second",
+  "name": "second-build",
   "version": "1.0.0",
-  "description": "Second megarepo",
+  "description": "Megarepo for second.",
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
-  "license": "ISC",
+  "license": "MIT",
   "scripts": {
     "lerna": "lerna",
     "start": "lerna run build && node packages/example-simple-api"
   },
   "devDependencies": {
     "lerna": "^2.0.0-rc.4"
-  }
+  },
+  "private": true
 }

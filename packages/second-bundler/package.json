@@ -1,6 +1,6 @@
 {
   "name": "second-bundler",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Bundle the assets for Second-compatible component modules",
   "main": "lib/index.js",
   "module": "src/index.js",
@@ -12,7 +12,7 @@
     "prepublish": "npm run build"
   },
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "bluebird": "^3.5.0",
     "debug": "^2.6.8"
