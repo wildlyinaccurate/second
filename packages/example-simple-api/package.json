@@ -1,7 +1,7 @@
 {
   "name": "second-example-simple-api",
-  "version": "0.1.0",
-  "description": "A Morph API clone using Second components",
+  "version": "1.0.0",
+  "description": "A simple Second example",
   "main": "lib/index.js",
   "module": "src/index.js",
   "scripts": {
@@ -12,17 +12,18 @@
     "prepublish": "npm run build"
   },
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "express": "^4.15.2",
     "preact": "^8.1.0",
     "preact-compat": "^3.14.3",
-    "second-container": "^0.1.0",
-    "second-fetcher": "^0.1.0",
-    "second-renderer": "^0.1.0"
+    "second-container": "^1.0.0",
+    "second-fetcher": "^1.0.0",
+    "second-renderer": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.3.3",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.0",

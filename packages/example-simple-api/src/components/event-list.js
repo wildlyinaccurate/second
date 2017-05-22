@@ -3,14 +3,17 @@ import createContainer from './container'
 import Repository from './repository'
 
 function EventList (props) {
-  const events = props.events.body
+  const events = props.events.body.filter(ev => ev.type === 'WatchEvent')
 
-  return h('ul', {}, events.filter(ev => ev.type === 'WatchEvent').map(ev =>
-    h('li', {}, [
-      `${ev.actor.display_login} ${ev.payload.action} watching `,
-      h(Repository, { name: ev.repo.name })
-    ])
-  ))
+  return (
+    <ul>
+      {events.map(ev =>
+        <li>
+          {ev.payload.action} watching <Repository name={ev.repo.name} />
+        </li>
+      )}
+    </ul>
+  )
 }
 
 EventList.displayName = 'EventList'

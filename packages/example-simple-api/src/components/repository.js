@@ -4,10 +4,11 @@ import createContainer from './container'
 function Repository (props) {
   const repo = props.repo.body
 
-  return h('a', { href: repo.html_url }, [
-    repo.full_name,
-    ` (${repo.stargazers_count} ⭐)`
-  ])
+  return (
+    <a href={repo.html_url}>
+      {repo.full_name} ({repo.stargazers_count} ⭐)
+    </a>
+  )
 }
 
 Repository.displayName = 'Repository'
