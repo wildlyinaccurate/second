@@ -58,10 +58,12 @@ export default class Fetcher {
       if (!this.requests.hasOwnProperty(key)) {
         log(`Making request for ${name}`)
 
+        const mustSucceed = propOr(true, 'mustSucceed', params)
+
         this.requests[key] = {
-          promise: this.fetch(params),
+          promise: this.fetch(params, mustSucceed),
           read: false,
-          mustSucceed: propOr(true, 'mustSucceed', params)
+          mustSucceed
         }
 
         this.requests[key].promise.catch((error) => {
@@ -98,23 +100,28 @@ export default class Fetcher {
   }
 
   // Make an external call to fetch data
-  fetch (params) {
+  fetch (params, mustSucceed = true) {
     const url = typeof params.uri === 'string' ? params.uri : this.getUrlFor(params.uri)
 
     return this.makeRequest(url).then(({ body, statusCode }) => {
-      if (statusCode === 200) {
-        log(`[200] ${url}`)
+      log(`[${statusCode}] ${url}`)
 
+      if (statusCode === 200) {
         return {
           body,
           meta: { statusCode }
         }
-      } else if (statusCode === 202) {
-        log(`[202] re-fetching in ${REFETCH_DELAY}ms ${url}`)
+      } else if (statusCode === 202 && mustSucceed) {
+        log(`Re-fetching in ${REFETCH_DELAY}ms`)
 
         return Promise.delay(REFETCH_DELAY).then(() => this.fetch(params))
-      } else {
+      } else if (mustSucceed) {
         throw new Error(`[${statusCode}] Upstream request failed ${url} / ${body}`)
+      }
+
+      return {
+        body,
+        meta: { statusCode }
       }
     })
   }

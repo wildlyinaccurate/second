@@ -15,8 +15,7 @@ Repository.displayName = 'Repository'
 export default createContainer(Repository, {
   data: (props) => ({
     repo: {
-      uri: `https://api.github.com/repos/${props.name}?access_token=6d3d807fdbc57453b631809754a2d85c3ecec7ff`,
-      mustSucceed: false
+      uri: `https://api.github.com/repos/${props.name}?access_token=6d3d807fdbc57453b631809754a2d85c3ecec7ff`
     }
   })
 })
