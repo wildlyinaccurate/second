@@ -48,10 +48,11 @@ export default class Renderer {
       if (!this.componentIsReady()) {
         log(`Component is not ready. Trying again in ${delayTime}ms.`)
 
-        return Promise.delay(delayTime).then(() => this.renderUntilComplete(render, Component, params))
+        resolve(Promise.delay(delayTime).then(() => this.renderUntilComplete(render, Component, params)))
       }
 
       log(`Completed render of ${Component.displayName}`)
+
       resolve(rendered)
     }).catch(e => {
       if (!this.componentIsReady()) {
