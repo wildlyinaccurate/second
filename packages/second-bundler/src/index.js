@@ -52,6 +52,7 @@ export default class Bundler {
       ])
       .all()
       .then(map(trim))
+      .tap(() => log(`Loaded styles from ${directory}`))
       .spread(styleAccumulator)
       .catch(styleAccumulator /* No second-compatible styles in this module */)
   }
