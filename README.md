@@ -1,10 +1,16 @@
 # Second
 
-Second is a component rendering service.
+Second is a framework for building and rendering React components on the server.
 
 > In traditional rock climbing, the second is the climber that ascends after the lead climber has placed protection on the route and created an anchor at the top. Seconding is typically much easier and safer than leading.
 
-## Setup
+Second is composed of several main components:
+
+- [second-renderer](packages/second-renderer) -
+
+## Contributing
+
+### Setup
 
 ```
 git clone git@github.com:wildlyinaccurate/second.git
@@ -12,16 +18,9 @@ npm install
 npm run lerna bootstrap
 ```
 
-You'll also need to link or install the modules you want to render:
+### Running the example application
 
-```
-npm link /path/to/morph-modules/news-top-stories
-npm install my-component-module
-```
-
-## Running the API server
-
-See the [second-api documentation](packages/second-api) for more information about the API.
+Run the [example API server](packages/example-simple-api) with
 
 ```
 npm start
@@ -33,7 +32,7 @@ Second understands the `NODE_ENV` and [`DEBUG`](https://www.npmjs.com/package/de
 NODE_ENV=production DEBUG=second:* npm start
 ```
 
-## Local development
+### Running the tests
 
 Run the tests during development with:
 

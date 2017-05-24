@@ -2,19 +2,25 @@
 
 ## API
 
-### `render(moduleName, props) -> Promise(String)`
+### `new Fetcher({ VDom, VDomServer, ?componentIsReady }) -> Fetcher`
+
+Constructs a new fetcher.
+
+#### Options
+
+- `VDom` _(Object)_: A virtual DOM library that implements the `createElement` function. Examples are [React](https://facebook.github.io/react/) and [Preact](https://preactjs.com/).
+- `VDomServer` _(Object)_: A virtual DOM library that implements the `renderToString` and (optionally) `renderToStaticMarkup` functions.
+- `componentIsReady` _(Function -> Boolean)_: Optional. A function that determines whether rendered components are ready. When this function returns `false`, the renderer will continue to re-render the component after a short delay until the function returns `true`. This is often used in conjunction with second-fetcher to ensure all data has been fetched for the component before returning the rendered markup.
+
+### `render(Component, props) -> Promise(String)`
 
 Renders a component to HTML, returning a Promise that resolves to a string containing the rendered HTML.
 
 #### Arguments
 
-- `moduleName` _(String)_: A name which, when resolved by `require()`, returns a Second component.
-- `props` _(Object)_: Props that are passed directly to the component. Can also contain some special props that are understood by the renderer itself (see below).
+- `Component` _(Object)_: A component object that can be rendered by the VDOM library's `renderToString` function.
+- `props` _(Object)_: Props that are passed directly to the component.
 
-## The fetcher
+### `renderStatic(Component, props) -> Promise(String)`
 
-All fetching is done through Morph. Therefore, a valid certificate is required for fetching to work. Currently, only fetching from Morph data templates is supported. Fetching directly from a Morph fetcher service is not supported.
-
-## Interaction with `Container` components
-
-CBF writing docs but basically compatible with morph-container. The renderer will shim second-container in place of morph-container whenever it is resolved with `require()` (which should be most cases).
+Same as above but uses the VDOM library's `renderToStaticMarkup` function.
