@@ -1,6 +1,6 @@
 {
   "name": "second-renderer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Second is a component rendering service",
   "main": "lib/index.js",
   "module": "src/index.js",
