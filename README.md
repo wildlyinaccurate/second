@@ -4,7 +4,7 @@ Second is a framework for building and rendering React components on the server.
 
 > In traditional rock climbing, the second is the climber that ascends after the lead climber has placed protection on the route and created an anchor at the top. Seconding is typically much easier and safer than leading.
 
-Second is composed of several main components:
+Second consists of several components:
 
 - [second-renderer](packages/second-renderer) -
 

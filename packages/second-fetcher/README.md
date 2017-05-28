@@ -1,20 +1,20 @@
-# Second Renderer
+# Second Fetcher
 
 ## API
 
-### `render(moduleName, props) -> Promise(String)`
+### `new Fetcher({ ?handlers, ?request }) -> Fetcher`
 
-Renders a component to HTML, returning a Promise that resolves to a string containing the rendered HTML.
+Constructs a new fetcher.
 
 #### Arguments
 
-- `moduleName` _(String)_: A name which, when resolved by `require()`, returns a Second component.
-- `props` _(Object)_: Props that are passed directly to the component. Can also contain some special props that are understood by the renderer itself (see below).
+- `handlers` _(Array<Function>)_: An array of handler functions. When given a request where `uri` is not a `string`, fetcher will iterate over the handlers, calling them in turn until one returns a `string`.
+- `request` _(Function)_: A function that takes a single parameter, `url`, and returns a `Promise` that resolves to an object with `body` and `statusCode` properties.
 
-## The fetcher
+### `request(requests) -> Object`
 
-All fetching is done through Morph. Therefore, a valid certificate is required for fetching to work. Currently, only fetching from Morph data templates is supported. Fetching directly from a Morph fetcher service is not supported.
+Makes a request for each `RequestObject` in `requests`. Returns an object of type `{ [string]: Promise }`, where the keys When there are no more outstanding requests, the return value
 
-## Interaction with `Container` components
+#### Arguments
 
-CBF writing docs but basically compatible with morph-container. The renderer will shim second-container in place of morph-container whenever it is resolved with `require()` (which should be most cases).
+- `requests` _({ [string]: RequestObject })_: An object where each key is a request identifier, and the values are `RequestObject`s.
