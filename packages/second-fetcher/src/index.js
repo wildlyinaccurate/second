@@ -83,7 +83,7 @@ export default class Fetcher {
         return request.promise.value()
       }
 
-      return {}
+      return request.promise
     }, requests)
   }
 
