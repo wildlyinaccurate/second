@@ -1,33 +1,27 @@
-# Second web API
+# Second API example
 
-## TODO
+This application uses [Express](http://expressjs.com/) and [Second](https://github.com/wildlyinaccurate/second) to build a server-rendered [Preact](https://preactjs.com/) application.
 
-- Render styles in the order that they appear in the (depth-first) dependency tree
-- Better support for Morph requester formats
-- Cache expensive operations between requests
-- Formalise some specs that can be converted into ✨ tests ✨
+## Running the example
 
-## JSON envelope format
+First, install the example:
 
-This API works with the envelope format, which is a JSON object containing the following properties:
+```
+git clone git@github.com:wildlyinaccurate/second.git
+cd second/packages/example-simple-api
+npm install
+```
 
-- `head`: an array of strings intended to be inserted into the document <head> element. Usually stylesheets, metadata, and blocking scripts.
-- `bodyInline`: a string intended to be inserted somewhere in the document <body>.
-- `bodyLast`: an array of strings intended to be inserted at the end of the document <body>. Usually non-blocking scripts.
+Then run the server:
 
-## Usage
+```
+npm start
+```
 
-> **Note:** Any components must be installed (with [npm-install](https://docs.npmjs.com/cli/install)) before they can be rendered.
+Or run the server with logging enabled:
 
-### `/render/:module -> Envelope`
+```
+DEBUG=second:* npm start
+```
 
-Renders `module` with second-renderer, and bundles its assets with second-bundler. Returns a JSON envelope.
-
-### `/preview/:module -> HTML`
-
-Renders `module` with second-renderer, and bundles its assets with second-bundler. Inserts the results into a standard HTML page.
-
-## Special query parameters
-
-- `@@renderer`: Specifies which library to render the component with. Available options are `react`, `preact`, `preact-compat`.
-- `@@static`: When this parameter is truthy, `renderToStaticMarkup` will be used to render components instead of `renderToString`.
+Then open [http://localhost:8082/events/wildlyinaccurate](http://localhost:8082/events/wildlyinaccurate) in a web browser. Change `wildlyinaccurate` to any GitHub username.

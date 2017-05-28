@@ -3,7 +3,7 @@
 ## Installation
 
 ```
-npm install second-renderer
+npm install --save second-renderer
 ```
 
 ## Quick start

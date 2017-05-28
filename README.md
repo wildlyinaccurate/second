@@ -1,12 +1,46 @@
 # Second
 
-Second is a framework for building and rendering React components on the server.
+Second is a framework for building and rendering React components on the server. It provides a higher-order data component that enables UI components to declare their data dependencies. Second ensures that all data dependencies are met before completing a render cycle.
 
 > In traditional rock climbing, the second is the climber that ascends after the lead climber has placed protection on the route and created an anchor at the top. Seconding is typically much easier and safer than leading.
 
 Second consists of several components:
 
-- [second-renderer](packages/second-renderer) -
+- [second-container](packages/second-container) - Higher-order component that enables UI components to declare their data dependencies. Integrates with second-fetcher to ensure components are only rendered once their data requirements have been met.
+- [second-fetcher](packages/second-fetcher) - Interprets and fulfils data requirements.
+- [second-renderer](packages/second-renderer) - A lightweight wrapper around any VDOM library that implements [`createElement()`](https://facebook.github.io/react/docs/react-api.html#createelement), [`renderToString()`](https://facebook.github.io/react/docs/react-dom-server.html#rendertostring), and optionally [`renderToStaticMarkup()`](https://facebook.github.io/react/docs/react-dom-server.html#rendertostaticmarkup). Can be integrated with second-fetcher to ensure all data requirements are met before completing the render cycle.
+- [second-bundler](packages/second-bundler) - Experimental runtime stylesheet bundler.
+
+## Installation
+
+```
+npm install --save second
+```
+
+## Getting started
+
+Make sure you first install a VDOM library with a React-compatible API. For example, install React with `npm install --save react react-dom`.
+
+```js
+const VDom = require('react')
+const VDomServer = require('react-dom/server')
+const second = require('second')
+
+second.init({ VDom, VDomServer })
+
+const Component = require('./your-react-component')
+const props = {}
+
+second.render(Component, props).then(content =>
+  console.log('Output:', content)
+})
+```
+
+
+
+### Example application
+
+For a more complete example of a Second application, see [example-simple-api](packages/example-simple-api).
 
 ## Contributing
 

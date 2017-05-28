@@ -1,5 +1,11 @@
 # Second Fetcher
 
+## Installation
+
+```
+npm install --save second-fetcher
+```
+
 ## API
 
 ### `new Fetcher({ ?handlers, ?request }) -> Fetcher`
