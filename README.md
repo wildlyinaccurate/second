@@ -36,7 +36,29 @@ second.render(Component, props).then(content =>
 })
 ```
 
+Use the higher-order container component to declare data requirements:
 
+```js
+// your-react-component.js
+const React = require('react')
+const second = require('second')
+
+const WrappedComponent = require('./other-component')
+
+module.exports = second.createContainer(WrappedComponent, {
+  data: (props) => ({
+    // Each key is provided to the wrapped component as a prop
+    repo: {
+      // Use props to programmatically fetch data
+      uri: `https://api.github.com/repos/${props.repoName}`
+    },
+
+    contributors: {
+      uri: `https://api.github.com/repos/${props.repoName}/contributors`
+    }
+  })
+})
+```
 
 ### Example application
 
