@@ -1,6 +1,7 @@
 import containerFactory from 'second-container'
 import Fetcher from 'second-fetcher'
 import Renderer from 'second-renderer'
+import createDehydrator from 'second-dehydrator'
 
 class Second {
   constructor () {
@@ -17,6 +18,8 @@ class Second {
       createElement: VDom.createElement,
       fetcher
     })
+
+    this.dehydrate = createDehydrator(VDom.createElement)
 
     this.renderer = new Renderer({
       VDom,

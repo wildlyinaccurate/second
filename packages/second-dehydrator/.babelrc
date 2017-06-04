@@ -8,7 +8,6 @@
     ["transform-react-jsx", {
       "pragma": "h"
     }],
-    "add-module-exports",
-    "syntax-dynamic-import"
+    "add-module-exports"
   ]
 }
