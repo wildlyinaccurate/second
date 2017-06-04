@@ -18,6 +18,7 @@
     "preact": "^8.1.0",
     "preact-compat": "^3.14.3",
     "second-container": "^1.0.2",
+    "second-dehydrator": "^1.0.2",
     "second-fetcher": "^1.0.2",
     "second-renderer": "^1.0.2"
   },

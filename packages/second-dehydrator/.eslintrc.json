@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "standard",
+    "standard-jsx"
+  ],
+  "plugins": [
+    "standard"
+  ],
+  "settings": {
+    "react": {
+      "pragma": "h"
+    }
+  },
+  "rules": {
+    "arrow-parens": ["error", "as-needed"]
+  }
+}

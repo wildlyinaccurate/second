@@ -2,6 +2,8 @@ import Promise from 'bluebird'
 import debug from 'debug'
 
 const INITIAL_RERENDER_DELAY = 100
+const RERENDER_DELAY_ERROR = 400
+
 const log = debug('second:renderer')
 
 export default class Renderer {
@@ -55,7 +57,8 @@ export default class Renderer {
 
       resolve(rendered)
     }).catch(e => {
-      if (!this.componentIsReady()) {
+      if (!this.componentIsReady() && delayTime < RERENDER_DELAY_ERROR) {
+        log(`[Error] ${e}`)
         log(`Error thrown by ${Component.displayName}, but component is not ready. Trying again in ${delayTime}ms.`)
 
         return Promise.delay(delayTime).then(() => this.renderUntilComplete(render, Component, params))
