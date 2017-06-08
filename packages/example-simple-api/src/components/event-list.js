@@ -19,7 +19,7 @@ function EventList (props) {
 EventList.displayName = 'EventList'
 
 export default second.createContainer(EventList, {
-  data: (props) => ({
+  data: props => ({
     events: {
       uri: `https://api.github.com/users/${props.user}/events/public`
     }

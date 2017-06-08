@@ -14,7 +14,7 @@ function Repository (props) {
 Repository.displayName = 'Repository'
 
 export default second.createContainer(Repository, {
-  data: (props) => ({
+  data: props => ({
     repo: {
       uri: `https://api.github.com/repos/${props.name}`
     }

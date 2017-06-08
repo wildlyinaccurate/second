@@ -66,7 +66,7 @@ export default class Fetcher {
           mustSucceed
         }
 
-        this.requests[key].promise.catch((error) => {
+        this.requests[key].promise.catch(error => {
           this.requests[key].read = true
 
           throw error
