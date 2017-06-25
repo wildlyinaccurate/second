@@ -2,6 +2,12 @@
 
 Bundle the assets for Second-compatible component modules
 
+## Installation
+
+```
+npm install --save second-bundler
+```
+
 ## API
 
 ### `getStyles(moduleName) -> Promise(Bundle)`
