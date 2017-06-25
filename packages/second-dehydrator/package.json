@@ -1,8 +1,14 @@
 {
   "name": "second-dehydrator",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Dehydrate React/Preact components on the server so that they can be rehydrated with their original props on the client.",
-  "keywords": ["second", "preact", "react", "dehydrate", "hydrate"],
+  "keywords": [
+    "second",
+    "preact",
+    "react",
+    "dehydrate",
+    "hydrate"
+  ],
   "main": "lib/index.js",
   "module": "src/index.js",
   "scripts": {

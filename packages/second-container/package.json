@@ -1,8 +1,14 @@
 {
   "name": "second-container",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Build data-driven React components with a higher-order container that handles data fetching.",
-  "keywords": ["second", "react", "preact", "data", "relay"],
+  "keywords": [
+    "second",
+    "react",
+    "preact",
+    "data",
+    "relay"
+  ],
   "main": "lib/index.js",
   "module": "src/index.js",
   "scripts": {
