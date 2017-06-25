@@ -16,6 +16,7 @@ Constructs a new fetcher.
 
 - `handlers` _(Array<Function>)_: An array of handler functions. When given a request where `uri` is not a `string`, fetcher will iterate over the handlers, calling them in turn until one returns a `string`.
 - `request` _(Function)_: A function that takes a single parameter, `url`, and returns a `Promise` that resolves to an object with `body` and `statusCode` properties.
+- `disableFetchHandler` _(Boolean)_: By default the fetcher will inspect fetch results to check HTTP status code and handle any errors. This can be disabled, for example to implement custom result handling.
 
 ### `request(requests) -> Object`
 

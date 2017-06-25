@@ -9,11 +9,12 @@ const REFETCH_DELAY = 100
 const log = debug('second:fetcher')
 
 export default class Fetcher {
-  constructor ({ handlers = [], request = this._makeRequest } = {}) {
+  constructor ({ handlers = [], request = this._makeRequest, disableFetchHandler = false } = {}) {
     this.requests = {}
     this.unreadResponses = false
     this.handlers = handlers
     this.makeRequest = request
+    this.disableFetchHandler = disableFetchHandler
   }
 
   reset () {
@@ -22,7 +23,7 @@ export default class Fetcher {
   }
 
   getUrlFor (_params) {
-    const params = clone(_params)
+    const params = (typeof _params === 'object') ? clone(_params) : _params
 
     for (const handler of this.handlers) {
       log(`Checking ${handler.name}`)
@@ -109,7 +110,13 @@ export default class Fetcher {
   fetch (params, mustSucceed = true) {
     const url = typeof params.uri === 'string' ? params.uri : this.getUrlFor(params)
 
-    return this.makeRequest(url).then(({ body, statusCode }) => {
+    return this.makeRequest(url).then(result => {
+      if (this.disableFetchHandler) {
+        return result
+      }
+
+      const { body, statusCode } = result
+
       log(`[${statusCode}] ${url}`)
 
       if (statusCode === 200) {
