@@ -107,7 +107,7 @@ export default class Fetcher {
 
   // Make an external call to fetch data
   fetch (params, mustSucceed = true) {
-    const url = typeof params.uri === 'string' ? params.uri : this.getUrlFor(params.uri)
+    const url = typeof params.uri === 'string' ? params.uri : this.getUrlFor(params)
 
     return this.makeRequest(url).then(({ body, statusCode }) => {
       log(`[${statusCode}] ${url}`)
