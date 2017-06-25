@@ -8,15 +8,15 @@ class Second {
     this.initialised = false
   }
 
-  init ({ VDom, VDomServer }) {
+  init ({ VDom, VDomServer, fetcherOptions = {} }) {
     this.initialised = true
 
-    const fetcher = new Fetcher()
+    this.fetcher = new Fetcher(fetcherOptions)
 
     this.containerFactory = containerFactory({
       Component: VDom.Component,
       createElement: VDom.createElement,
-      fetcher
+      fetcher: this.fetcher
     })
 
     this.dehydrate = createDehydrator(VDom.createElement)
@@ -24,8 +24,12 @@ class Second {
     this.renderer = new Renderer({
       VDom,
       VDomServer,
-      componentIsReady: () => !fetcher.hasOutstandingRequests()
+      componentIsReady: () => !this.fetcher.hasOutstandingRequests()
     })
+  }
+
+  reset () {
+    this.fetcher.reset()
   }
 
   createContainer (Component, params) {
