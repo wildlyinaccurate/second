@@ -16,6 +16,11 @@ export default class Fetcher {
     this.makeRequest = request
   }
 
+  reset () {
+    this.requests = {}
+    this.unreadResponses = false
+  }
+
   getUrlFor (_params) {
     const params = clone(_params)
 
