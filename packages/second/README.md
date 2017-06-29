@@ -26,7 +26,7 @@ second.init({
   VDomServer: ReactDOMServer
 })
 
-const MyComponentWithData = second.createContainer(MyComponent, {
+const MyDataComponent = second.createContainer(MyComponent, {
   data: props => ({
     events: { // Will be available as this.props.events in MyComponent
       uri: `https://api.github.com/users/${props.user}/events/public`
@@ -34,7 +34,7 @@ const MyComponentWithData = second.createContainer(MyComponent, {
   })
 })
 
-second.render(MyComponentWithData, { user: 'wildlyinaccurate' }).then(output => {
+second.render(MyDataComponent, { user: 'wildlyinaccurate' }).then(output => {
   // Do something with rendered component output
 })
 ```

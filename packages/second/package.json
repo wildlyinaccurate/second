@@ -21,9 +21,6 @@
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.15.2",
-    "preact": "^8.1.0",
-    "preact-compat": "^3.14.3",
     "second-container": "^1.1.2",
     "second-dehydrator": "^1.1.2",
     "second-fetcher": "^1.1.2",
