@@ -9,6 +9,7 @@ Second consists of several components:
 - [second-container](packages/second-container) - Higher-order component that enables UI components to declare their data dependencies. Integrates with second-fetcher to ensure components are only rendered once their data requirements have been met.
 - [second-fetcher](packages/second-fetcher) - Interprets and fulfils data requirements.
 - [second-renderer](packages/second-renderer) - A lightweight wrapper around any VDOM library that implements [`createElement()`](https://facebook.github.io/react/docs/react-api.html#createelement), [`renderToString()`](https://facebook.github.io/react/docs/react-dom-server.html#rendertostring), and optionally [`renderToStaticMarkup()`](https://facebook.github.io/react/docs/react-dom-server.html#rendertostaticmarkup). Can be integrated with second-fetcher to ensure all data requirements are met before completing the render cycle.
+- [second-dehydrator](packages/second-dehydrator) - Dehydrates a component's props and state so that it can be selectively rehydrated on the client.
 - [second-bundler](packages/second-bundler) - Experimental runtime stylesheet bundler.
 
 ## Installation
