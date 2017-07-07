@@ -6,10 +6,11 @@ export default function createDehydrator (createElement) {
         const crypto = require('crypto')
         const serialisedProps = JSON.stringify(props)
         const componentId = crypto.createHash('sha256').update(serialisedProps).digest('hex')
+        const componentName = Component.displayName || Component.name
 
         return (
           <span>
-            <span data-component-name={Component.displayName} data-hydration-id={componentId}>
+            <span data-component-name={componentName} data-hydration-id={componentId}>
               <Component {...props} />
             </span>
 
