@@ -1,7 +1,7 @@
 import containerFactory from 'second-container'
 import Fetcher from 'second-fetcher'
 import Renderer from 'second-renderer'
-import createDehydrator from 'second-dehydrator'
+import { createDehydrator } from 'second-dehydrator'
 
 class Second {
   constructor () {
