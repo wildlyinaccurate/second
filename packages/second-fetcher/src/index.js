@@ -120,10 +120,7 @@ export default class Fetcher {
       log(`[${statusCode}] ${url}`)
 
       if (statusCode === 200) {
-        return {
-          body,
-          meta: { statusCode }
-        }
+        return body
       } else if (statusCode === 202 && mustSucceed) {
         log(`Re-fetching in ${REFETCH_DELAY}ms`)
 
@@ -132,10 +129,7 @@ export default class Fetcher {
         throw new Error(`[${statusCode}] Upstream request failed ${url} / ${body}`)
       }
 
-      return {
-        body,
-        meta: { statusCode }
-      }
+      return body
     })
   }
 }
