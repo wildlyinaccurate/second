@@ -1,6 +1,8 @@
 # Second
 
-This is a convenience wrapper interface around the following Second components:
+Second is a framework for building and rendering React components on the server. It provides a higher-order data component that enables UI components to declare their data dependencies. Second ensures that all data dependencies are met before completing a render cycle. Components that require interactivity in the browser can be dehydrated with their original props, and rehydrated in the browser.
+
+This package is a convenience wrapper interface around the following Second components:
 
 - [second-container](../packages/second-container)
 - [second-dehydrator](../packages/second-dehydrator)
