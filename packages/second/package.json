@@ -1,6 +1,6 @@
 {
   "name": "second",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Build React components with server-only data requirements, then rehydrate them on the client to provide interactivity and event bindings.",
   "keywords": [
     "second",
@@ -21,7 +21,7 @@
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
   "license": "MIT",
   "dependencies": {
-    "second-container": "^1.2.0",
+    "second-container": "^1.2.1",
     "second-dehydrator": "^1.2.0",
     "second-fetcher": "^1.2.0",
     "second-renderer": "^1.2.0"
