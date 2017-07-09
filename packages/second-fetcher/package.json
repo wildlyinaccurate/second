@@ -1,6 +1,6 @@
 {
   "name": "second-fetcher",
-  "version": "1.2.0",
+  "version": "1.2.3",
   "description": "Second is a component rendering service",
   "main": "lib/index.js",
   "module": "src/index.js",
