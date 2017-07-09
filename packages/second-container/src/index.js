@@ -1,5 +1,7 @@
 export default function containerFactory ({ fetcher, Component, createElement }) {
   return function createContainer (WrappedComponent, params) {
+    const wrappedName = WrappedComponent.displayName || WrappedComponent.name
+
     const container = class Container extends Component {
       constructor (props) {
         super(props)
@@ -19,7 +21,7 @@ export default function containerFactory ({ fetcher, Component, createElement })
       }
     }
 
-    container.displayName = `SecondContainer[${WrappedComponent.displayName}]`
+    container.displayName = `SecondContainer[${wrappedName}]`
 
     return container
   }
