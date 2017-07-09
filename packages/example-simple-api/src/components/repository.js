@@ -2,8 +2,7 @@ import { h, Component } from 'preact'
 import dehydrate from 'second-dehydrator'
 
 class Repository extends Component {
-  render (props, state) {
-    const repo = props.repo.body
+  render ({ repo }, state) {
     const peekaboo = () => this.setState({ message: 'Peekaboo!' })
     const shh = () => this.setState({ message: null })
 

@@ -11,7 +11,7 @@ const RepositoryWithData = second.createContainer(Repository, {
 })
 
 function EventList (props) {
-  const events = props.events.body.filter(ev => ev.type === 'WatchEvent')
+  const events = props.events.filter(ev => ev.type === 'WatchEvent')
 
   return (
     <ul>
