@@ -9,8 +9,8 @@ export default function template (path, options, done) {
     const validPlaceholder = key => typeof options[key] === 'string'
     const replaceValue = (acc, key) => acc.replace(`{{${key}}}`, options[key])
     const rendered = Object.keys(options)
-                           .filter(validPlaceholder)
-                           .reduce(replaceValue, template)
+      .filter(validPlaceholder)
+      .reduce(replaceValue, template)
 
     return done(null, rendered)
   })
