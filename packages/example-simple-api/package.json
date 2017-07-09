@@ -1,6 +1,6 @@
 {
   "name": "second-example-simple-api",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A simple Second example",
   "main": "lib/index.js",
   "module": "src/index.js",
@@ -21,7 +21,7 @@
     "memory-fs": "^0.4.1",
     "preact": "^8.1.0",
     "preact-render-to-string": "^3.6.3",
-    "second": "^1.2.1",
+    "second": "^1.2.2",
     "second-dehydrator": "^1.2.0"
   },
   "devDependencies": {

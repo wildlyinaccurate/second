@@ -1,6 +1,6 @@
 {
   "name": "second",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Build React components with server-only data requirements, then rehydrate them on the client to provide interactivity and event bindings.",
   "keywords": [
     "second",
