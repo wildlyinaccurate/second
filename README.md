@@ -61,6 +61,39 @@ module.exports = second.createContainer(WrappedComponent, {
 })
 ```
 
+Dehydrate components to prepare them for rehydration on the client:
+
+```jsx
+// sub-component.js
+const React = require('react')
+const second = require('second')
+
+class SubComponent extends React.Component {
+  render () {
+    // ...
+  }
+}
+
+module.exports = second.dehydrate(SubComponent)
+
+
+// main-component.js
+const React = require('react')
+const SubComponent = require('./sub-component')
+
+module.exports = class MainComponent extends React.Component {
+  render () {
+    return (
+      <div>
+        <SubComponent prop1="foo" prop2="bar">
+          <span>Children will be dehydrated as well!</span>
+        </SubComponent>
+      </div>
+    )
+  }
+}
+```
+
 ### Example application
 
 For a more complete example of a Second application, see [example-simple-api](packages/example-simple-api).
