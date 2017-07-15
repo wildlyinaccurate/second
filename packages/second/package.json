@@ -1,6 +1,6 @@
 {
   "name": "second",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Build React components with server-only data requirements, then rehydrate them on the client to provide interactivity and event bindings.",
   "keywords": [
     "second",
@@ -22,8 +22,8 @@
   "license": "MIT",
   "dependencies": {
     "second-container": "^1.2.3",
-    "second-dehydrator": "^1.4.0",
-    "second-fetcher": "^1.2.3",
+    "second-dehydrator": "^1.5.0",
+    "second-fetcher": "^1.5.0",
     "second-renderer": "^1.2.3"
   },
   "devDependencies": {
