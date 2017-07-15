@@ -1,6 +1,6 @@
 import Promise from 'bluebird'
 import fp, { clone, filter, propOr } from 'lodash/fp'
-import request from 'request-promise'
+import fetch from 'isomorphic-fetch'
 import debug from 'debug'
 
 const mapValuesWithKey = fp.mapValues.convert({ cap: false })
@@ -94,39 +94,32 @@ export default class Fetcher {
   }
 
   _makeRequest (url) {
-    return request({
-      url,
-      json: true,
-      resolveWithFullResponse: true,
-      simple: false,
-      timeout: 5000,
-      headers: {
-        'User-Agent': 'second-fetcher'
-      }
-    })
+    return Promise.resolve(fetch(url, {
+      redirect: 'follow'
+    }))
   }
 
   // Make an external call to fetch data
   fetch (params, mustSucceed = true) {
     const url = typeof params.uri === 'string' ? params.uri : this.getUrlFor(params)
 
-    return this.makeRequest(url).then(result => {
+    return this.makeRequest(url).then(response => {
       if (this.disableFetchHandler) {
-        return result
+        return response
       }
 
-      const { body, statusCode } = result
+      const { status } = response
 
-      log(`[${statusCode}] ${url}`)
+      log(`[${status}] ${url}`)
 
-      if (statusCode === 200) {
-        return body
-      } else if (statusCode === 202 && mustSucceed) {
+      if (status === 200) {
+        return response.json()
+      } else if (status === 202 && mustSucceed) {
         log(`Re-fetching in ${REFETCH_DELAY}ms`)
 
         return Promise.delay(REFETCH_DELAY).then(() => this.fetch(params))
       } else if (mustSucceed) {
-        throw new Error(`[${statusCode}] Upstream request failed ${url} / ${body}`)
+        throw new Error(`[${status}] Upstream request failed ${url} / ${response.text()}`)
       }
 
       return body

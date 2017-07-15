@@ -17,8 +17,7 @@
     "bluebird": "^3.5.0",
     "debug": "^2.6.8",
     "lodash": "^4.17.4",
-    "request": "^2.81.0",
-    "request-promise": "^4.2.1"
+    "isomorphic-fetch": "^2.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
