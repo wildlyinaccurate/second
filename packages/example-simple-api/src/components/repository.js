@@ -1,5 +1,7 @@
 import { h, Component } from 'preact'
-import dehydrate from 'second-dehydrator'
+import { createDehydrator } from 'second-dehydrator'
+
+const dehydrate = createDehydrator(h)
 
 class Repository extends Component {
   render ({ repo }, state) {
@@ -16,4 +18,4 @@ class Repository extends Component {
 
 Repository.displayName = 'Repository'
 
-export default dehydrate(h)(Repository)
+export default dehydrate(Repository)
