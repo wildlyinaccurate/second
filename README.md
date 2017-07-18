@@ -34,7 +34,7 @@ const props = {}
 
 second.render(Component, props).then(content =>
   console.log('Output:', content)
-})
+)
 ```
 
 Use the higher-order container component to declare data requirements:
