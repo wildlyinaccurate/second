@@ -1,5 +1,7 @@
 # Second
 
+**[Read the blog post](https://wildlyinaccurate.com/introducing-second-a-framework-for-mostly-static-react-applications/)**
+
 Second is a framework for building and rendering React components on the server. It provides a higher-order data component that enables UI components to declare their data dependencies. Second ensures that all data dependencies are met before completing a render cycle. Components that require interactivity in the browser can be dehydrated with their original props, and rehydrated in the browser.
 
 > In traditional rock climbing, the second is the climber that ascends after the lead climber has placed protection on the route and created an anchor at the top. Seconding is typically much easier and safer than leading.
