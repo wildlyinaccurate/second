@@ -3,7 +3,7 @@ export default function createDehydrator (createElement) {
     if (typeof DISABLE_DEHYDRATOR === 'undefined') {
       return function DehydratedLeaf (props) {
         const crypto = require('crypto')
-        const serialisedProps = JSON.stringify(props)
+        const serialisedProps = JSON.stringify(props).replace(/\//g, '\\/')
         const componentId = crypto.createHash('sha256').update(serialisedProps).digest('hex')
         const componentName = Component.displayName || Component.name
 
