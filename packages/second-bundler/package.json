@@ -14,18 +14,18 @@
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
   "license": "MIT",
   "dependencies": {
-    "bluebird": "^3.5.0",
-    "debug": "^2.6.8"
+    "bluebird": "^3.5.1",
+    "debug": "^2.6.9"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-preset-env": "^1.6.0",
-    "eslint": "^4.2.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^4.19.1",
     "eslint-config-standard": "^10.2.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-node": "^5.1.0",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0"
   },
   "repository": {
     "type": "git",
