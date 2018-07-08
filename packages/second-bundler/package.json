@@ -1,6 +1,6 @@
 {
   "name": "second-bundler",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "Bundle the assets for Second-compatible component modules",
   "main": "lib/index.js",
   "module": "src/index.js",
