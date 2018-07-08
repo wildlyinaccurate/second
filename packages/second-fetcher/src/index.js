@@ -124,7 +124,7 @@ export default class Fetcher {
         throw new Error(`[${status}] Upstream request failed ${url} / ${response.text()}`)
       }
 
-      return body
+      return response.body
     })
   }
 }
