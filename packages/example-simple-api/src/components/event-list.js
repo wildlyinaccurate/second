@@ -5,7 +5,8 @@ import Repository from './repository'
 const RepositoryWithData = second.createContainer(Repository, {
   data: props => ({
     repo: {
-      uri: `https://api.github.com/repos/${props.name}`
+      uri: `https://api.github.com/repos/${props.name}`,
+      pick: ['html_url', 'full_name', 'stargazers_count']
     }
   })
 })

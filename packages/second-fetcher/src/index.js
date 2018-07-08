@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import fp, { clone, filter, propOr } from 'lodash/fp'
+import fp, { clone, filter, pick, propOr } from 'lodash/fp'
 import fetch from 'isomorphic-fetch'
 import debug from 'debug'
 
@@ -84,9 +84,11 @@ export default class Fetcher {
       if (request.promise.isFulfilled()) {
         log(`Returning fulfilled request for ${name}`)
 
+        const value = request.promise.value()
+
         request.read = true
 
-        return request.promise.value()
+        return Array.isArray(params.pick) ? pick(params.pick, value) : value
       }
 
       return request.promise

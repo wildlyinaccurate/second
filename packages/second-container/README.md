@@ -27,7 +27,11 @@ const MyComponent = (props) => <div>{props.username}'s name is {props.user.name}
 const MyDataComponent = createContainer(MyComponent, {
   data: props => ({
     user: { // Will be available as the 'user' prop in MyComponent
-      uri: `https://api.github.com/users/${props.username}`
+      uri: `https://api.github.com/users/${props.username}`,
+
+      // Optionally pass an array of keys to extract from the response. This is useful
+      // to reduce how much of the response is serialised and sent to the client.
+      pick: ['id', 'name', 'username']
     }
   })
 })

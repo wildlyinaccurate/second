@@ -8,7 +8,7 @@ npm install --save second-fetcher
 
 ## API
 
-### `new Fetcher({ ?handlers, ?request }) -> Fetcher`
+### `new Fetcher({ ?handlers, ?request, ?disableFetchHandler }) -> Fetcher`
 
 Constructs a new fetcher.
 
