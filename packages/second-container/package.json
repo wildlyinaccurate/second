@@ -30,9 +30,6 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1"
   },
-  "dependencies": {
-    "bluebird": "^3.5.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/wildlyinaccurate/second.git"
