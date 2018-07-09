@@ -53,7 +53,11 @@ module.exports = second.createContainer(WrappedComponent, {
     // Each key is provided to the wrapped component as a prop
     repo: {
       // Use props to programmatically fetch data
-      uri: `https://api.github.com/repos/${props.repoName}`
+      uri: `https://api.github.com/repos/${props.repoName}`,
+
+      // Optionally extract only the response properties that you need, to reduce
+      // the amount of data that is sent to the browser
+      pick: ['name', 'url', 'stargazers_count']
     },
 
     contributors: {
