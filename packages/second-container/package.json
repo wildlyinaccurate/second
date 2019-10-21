@@ -16,12 +16,13 @@
     "babel": "babel src -d lib",
     "test": "npm run eslint",
     "eslint": "eslint --fix bin/ src/",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.24.1",
+    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-env": "^1.6.0",
     "eslint": "^4.2.0",
     "eslint-config-standard": "^10.2.0",

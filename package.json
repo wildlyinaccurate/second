@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "lerna": "lerna",
+    "build": "lerna run build",
     "start": "lerna run build && node packages/example-simple-api"
   },
   "devDependencies": {

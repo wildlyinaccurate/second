@@ -10,7 +10,7 @@
     "client-bundle": "webpack",
     "test": "npm run eslint",
     "eslint": "eslint --fix bin/ src/",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "start": "npm run build && node ."
   },
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
