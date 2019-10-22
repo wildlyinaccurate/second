@@ -1,6 +1,6 @@
 {
   "name": "second-example-simple-api",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "A simple Second example",
   "main": "lib/index.js",
   "module": "src/index.js",
