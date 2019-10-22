@@ -1,4 +1,5 @@
 lib/
 node_modules/
 package-lock.json
+!packages/*/package-lock.json
 lerna-debug.log
