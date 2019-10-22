@@ -88,7 +88,19 @@ export default class Fetcher {
 
         request.read = true
 
-        return Array.isArray(params.pick) ? pick(params.pick, value) : value
+        if (Array.isArray(params.pick)) {
+          if (Array.isArray(value)) {
+            log(`Value is array; picking properties of inner objects: ${params.pick.join(', ')}`)
+
+            return value.map(inner => pick(params.pick, inner))
+          }
+
+          log(`Picking properties of value: ${params.pick.join(', ')}`)
+
+          return pick(params.pick, value)
+        }
+
+        return value
       }
 
       return request.promise
