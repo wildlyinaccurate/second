@@ -10,7 +10,32 @@
     "start": "lerna run build && node packages/example-simple-api"
   },
   "devDependencies": {
-    "lerna": "^2.11.0"
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babili-webpack-plugin": "^0.1.2",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^10.2.0",
+    "eslint-config-standard-jsx": "^4.0.2",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-react": "^7.10.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "lerna": "^3.18.2",
+    "webpack": "^2.7.0"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "second": "file:packages/second",
+    "second-bundler": "file:packages/second-bundler",
+    "second-container": "file:packages/second-container",
+    "second-dehydrator": "file:packages/second-dehydrator",
+    "second-example-simple-api": "file:packages/example-simple-api",
+    "second-fetcher": "file:packages/second-fetcher",
+    "second-renderer": "file:packages/second-renderer"
+  }
 }

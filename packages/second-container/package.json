@@ -20,17 +20,6 @@
   },
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
   "license": "MIT",
-  "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-env": "^1.6.0",
-    "eslint": "^4.2.0",
-    "eslint-config-standard": "^10.2.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-node": "^5.1.0",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/wildlyinaccurate/second.git"

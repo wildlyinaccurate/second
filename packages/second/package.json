@@ -21,21 +21,10 @@
   "author": "Joseph Wynn <joseph@wildlyinaccurate.com>",
   "license": "MIT",
   "dependencies": {
-    "second-container": "^1.6.0",
-    "second-dehydrator": "^1.6.0",
-    "second-fetcher": "^1.6.0",
-    "second-renderer": "^1.6.0"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-env": "^1.7.0",
-    "eslint": "^4.19.1",
-    "eslint-config-standard": "^10.2.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-promise": "^3.8.0",
-    "eslint-plugin-standard": "^3.1.0"
+    "second-container": "file:../second-container",
+    "second-dehydrator": "file:../second-dehydrator",
+    "second-fetcher": "file:../second-fetcher",
+    "second-renderer": "file:../second-renderer"
   },
   "repository": {
     "type": "git",
