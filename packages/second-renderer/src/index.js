@@ -38,7 +38,9 @@ export default class Renderer {
   }
 
   renderUntilComplete (render, Component, params) {
-    log(`Starting render of ${Component.displayName}`)
+    const componentName = Component.displayName || Component.name
+
+    log(`Starting render of ${componentName}`)
 
     const delayTime = this.reRenderDelay()
 
@@ -53,13 +55,13 @@ export default class Renderer {
         resolve(Promise.delay(delayTime).then(() => this.renderUntilComplete(render, Component, params)))
       }
 
-      log(`Completed render of ${Component.displayName}`)
+      log(`Completed render of ${componentName}`)
 
       resolve(rendered)
     }).catch(e => {
       if (!this.componentIsReady() && delayTime < RERENDER_DELAY_ERROR) {
         log(`[Error] ${e}`)
-        log(`Error thrown by ${Component.displayName}, but component is not ready. Trying again in ${delayTime}ms.`)
+        log(`Error thrown by ${componentName}, but component is not ready. Trying again in ${delayTime}ms.`)
 
         return Promise.delay(delayTime).then(() => this.renderUntilComplete(render, Component, params))
       }
