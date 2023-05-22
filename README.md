@@ -1,5 +1,9 @@
 # Second
 
+## ⚠️ This project is no longer maintained ⚠️
+
+Many of the features in Second are now available in the core React library, and as such Second will no longer be maintained. Thanks so much for your support!
+
 **[Read the blog post](https://wildlyinaccurate.com/introducing-second-a-framework-for-mostly-static-react-applications/)**
 
 Second is a framework for building and rendering React components on the server. It provides a higher-order data component that enables UI components to declare their data dependencies. Second ensures that all data dependencies are met before completing a render cycle. Components that require interactivity in the browser can be dehydrated with their original props, and rehydrated in the browser.
